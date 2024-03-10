@@ -1,17 +1,14 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import re
-from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
 import spacy
+import joblib
 
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
-
-import joblib
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -32,8 +29,6 @@ def preprocess_text(txt:str):
     return " ".join(tokens_filtered)
 
 # Load data
-plt.rcParams["figure.figsize"] = [10, 5]
-
 df = pd.read_csv('df_file.csv')
 df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
 
