@@ -3,11 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize,sent_tokenize
-from nltk.stem import PorterStemmer
-from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import CountVectorizer,TfidfVectorizer
 import spacy
 
@@ -16,7 +11,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
-from sklearn import metrics
 import joblib
 
 nlp = spacy.load("en_core_web_sm")
