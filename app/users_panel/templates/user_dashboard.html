@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/styles.css' %}"
+    />
+  </head>
+  <body>
+    {% include 'user_navbar.html' %}
+    <h2>Classify Articles based on their Title!</h2>
+    <div class="container">
+      <form method="post">
+        {% csrf_token %}
+        <div class="search-container">
+          <input
+            type="text"
+            class="search-input"
+            name="search_input"
+            placeholder="Enter the Article Title..."
+          />
+          <button type="submit" class="search-button">Classify</button>
+        </div>
+      </form>
+      {% if search_input %}
+      <div id="search-results">
+        <h3 class="search-output">You searched for: {{ search_input }}</h3>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
