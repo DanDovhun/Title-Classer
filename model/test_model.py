@@ -2,6 +2,7 @@ import joblib
 import numpy as np
 import re
 import spacy
+from model import preprocess_text
 
 # Load the model and vectorizer
 model = joblib.load("model.joblib")
@@ -49,23 +50,6 @@ categories = {
     "3": "Entertainment",
     "4": "Business"
 }
-
-# Preprocess the test text
-def preprocess_text(txt):
-    txt = re.sub('[^a-zA-Z]', ' ', txt)
-    txt = txt.lower()
-    txt = " ".join(txt.split())
-
-    doc = nlp(txt)
-
-    tokens_filtered = []
-
-    for token in doc:
-        if token.is_stop or token.is_punct:
-            continue
-        tokens_filtered.append(token.lemma_)
-
-    return " ".join(tokens_filtered)
 
 # Preprocess text
 for i in range(0,len(titles)):
