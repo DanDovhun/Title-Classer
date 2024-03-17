@@ -5,7 +5,7 @@ import spacy
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# Load the trained model
+# Load the model and vectorizer
 model = joblib.load("model.joblib")
 vectorizer = joblib.load("vectorizer.joblib")
 
@@ -61,7 +61,7 @@ def preprocess_text(txt):
     doc = nlp(txt)
 
     tokens_filtered = []
-    # Iterate through tokens and append to list if it's not a stop word or punctuation mark
+
     for token in doc:
         if token.is_stop or token.is_punct:
             continue
@@ -69,6 +69,7 @@ def preprocess_text(txt):
 
     return " ".join(tokens_filtered)
 
+# Preprocess text
 for i in range(0,len(titles)):
     titles[i] = preprocess_text(titles[i])
     articles[i] = preprocess_text(articles[i])
