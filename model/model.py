@@ -69,5 +69,6 @@ training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, 
 avg_score = round(np.mean(training_score) * 100, 2)
 
 joblib.dump(training_alg["model"], "model.joblib")
+joblib.dump(vectorizer, "vectorizer.joblib")
 
 print(training_score)
