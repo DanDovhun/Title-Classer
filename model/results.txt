@@ -1,0 +1,21 @@
+titles
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Entertainment
+Category: Business
+Category: Politics
+
+articles
+Category: Technology
+Category: Technology
+Category: Entertainment
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Politics
+Category: Business
+Category: Politics

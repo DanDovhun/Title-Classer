@@ -82,7 +82,7 @@ for i in titles:
 
     print(f"Category: {cat}")
 
-print("articles")
+print("\narticles")
 for i in articles:
     reshaped = np.array([i])
     transformed = vectorizer.transform(reshaped)
