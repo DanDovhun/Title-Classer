@@ -72,9 +72,6 @@ for i in range(0,len(titles)):
     titles[i][0] = preprocess_text(titles[i][0])
     articles[i][0] = preprocess_text(articles[i][0])
 
-for i in titles:
-    print(i)
-
 correctTitles = 0
 correctArticles = 0
 
