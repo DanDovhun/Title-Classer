@@ -15,7 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+LOGIN_URL = '/login' #This is here so that the app redirects when Admin pages are accessed without login
 # Application definition
 
 INSTALLED_APPS = [
@@ -70,6 +70,10 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', 
+    'admin_panel.backend.AdminUserBackend',  #custom authentication
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

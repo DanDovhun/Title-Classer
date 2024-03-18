@@ -1,0 +1,195 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1c2026;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+h2 {
+  text-align: center;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar styles */
+.admin-navbar {
+  background-color: #3e5d5e;
+}
+.admin-navbar h1 {
+  background-color: #273a3b;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.admin-navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-navbar ul li {
+  display: inline-block;
+  margin: 0;
+}
+
+.admin-navbar ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
+  padding: 10px 10px;
+  display: inline-block;
+}
+
+.admin-navbar ul li:hover a {
+  background-color: #4f7677;
+  border-radius: 5px;
+}
+
+.admin-navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Login Styles*/
+.loginAdmin {
+  background-color: #222831;
+  height: 50vh;
+  width: 48%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 100px auto;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.loginAdmin input {
+  background-color: #31363f;
+  color: rgb(225, 225, 225);
+  display: block;
+  margin: 20px 0px;
+  height: 30px;
+  width: 30vw;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.loginAdmin button {
+  background-color: darkblue;
+  width: 100px;
+  height: 40px;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.loginAdmin button:hover {
+  background-color: rgb(27, 27, 175);
+  width: 100px;
+  height: 40px;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+/*Admin management styles*/
+.admin-content .container {
+  display: flex;
+  justify-content: center;
+}
+
+.createAdmin,
+.adminList {
+  background-color: #222831;
+  height: 70vh;
+  width: 48%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: auto;
+  box-sizing: border-box;
+  vertical-align: top;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-content input {
+  background-color: #31363f;
+  color: rgb(225, 225, 225);
+  display: block;
+  margin: 20px 0px;
+  height: 30px;
+  width: 30vw;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px;
+}
+.createAdmin button {
+  background-color: darkblue;
+  width: 100px;
+  height: 40px;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+.createAdmin button:hover {
+  background-color: rgb(27, 27, 175);
+  width: 100px;
+  height: 40px;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.adminList {
+  display: inline-block;
+}
+.adminList h4 {
+  text-align: center;
+}
+.adminList ul {
+  width: 40vw;
+  list-style-type: none;
+  display: block;
+  overflow: auto;
+  max-height: 88%;
+}
+.adminList li {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: none;
+}
+
+.adminList button {
+  background-color: #dc3545;
+  color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.adminList button:hover {
+  background-color: #c82333;
+}
+
+.adminList input[type="hidden"] {
+  display: none;
+}
+
+/* Model management styles*/
+
+/*User reports management styles*/

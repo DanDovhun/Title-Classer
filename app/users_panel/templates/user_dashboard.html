@@ -8,7 +8,7 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{% static 'css/styles.css' %}"
+      href="{% static 'css/user_styles.css' %}"
     />
   </head>
   <body>
@@ -18,12 +18,10 @@
       <form method="post">
         {% csrf_token %}
         <div class="search-container">
-          <input
-            type="text"
+          <textarea
             class="search-input"
-            name="search_input"
-            placeholder="Enter the Article Title..."
-          />
+            placeholder="Enter the First paragraph of your article..."
+          ></textarea>
           <button type="submit" class="search-button">Classify</button>
         </div>
       </form>
@@ -33,5 +31,8 @@
       </div>
       {% endif %}
     </div>
+    <p>
+      Are you an Admin for this website? <a href="{% url 'admin' %}">Login</a>
+    </p>
   </body>
 </html>

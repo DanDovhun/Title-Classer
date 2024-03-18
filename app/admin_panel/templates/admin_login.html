@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/admin_styles.css' %}"
+    />
+  </head>
+  <body>
+    <h2>Welcome to the Admin Portal</h2>
+    {% if error_message %}
+    <p>{{ error_message }}</p>
+    {% endif %}
+
+    <div class="loginAdmin">
+      <form action="{% url 'admin_login' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          class="loginUname"
+          name="username"
+          placeholder="Username"
+          required
+        />
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          class="loginPass"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit" name="create_admin">Login</button>
+      </form>
+    </div>
+  </body>
+</html>
