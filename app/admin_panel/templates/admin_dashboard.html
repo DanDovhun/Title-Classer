@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TitleCLasser Admin</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/admin_styles.css' %}"
+    />
+  </head>
+  <body>
+    {% include 'admin_navbar.html' %}
+
+    <div class="content">{% block content %}{% endblock %}</div>
+
+    <script>
+      function showAdminSection(sectionId) {
+        document.querySelectorAll(".admin-section").forEach((section) => {
+          section.style.display = "none";
+        });
+        document.getElementById(sectionId).style.display = "block";
+      }
+    </script>
+  </body>
+</html>
