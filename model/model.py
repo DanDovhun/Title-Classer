@@ -28,46 +28,53 @@ def preprocess_text(txt:str):
         
     return " ".join(tokens_filtered)
 
-# Load data
-df = pd.read_csv('df_file.csv')
-df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
+def train():
+    # Load data
+    df = pd.read_csv('df_file.csv')
+    df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
 
-print("Data loaded")
+    print("Data loaded")
 
-# Remove duplicates
-df.drop_duplicates(ignore_index = True, inplace=True)
-print("Duplicates removed, preprocessing data")
+    # Remove duplicates
+    df.drop_duplicates(ignore_index = True, inplace=True)
+    print("Duplicates removed, preprocessing data")
 
-# Preprocess text
-df['prep_text'] = df['Text'].apply(preprocess_text)
-print("Preprocessing done")
-vectorizer = TfidfVectorizer(sublinear_tf=True, min_df=5,ngram_range=(1, 2), stop_words='english')
-features = vectorizer.fit_transform(df['prep_text']).toarray()
+    # Preprocess text
+    df['prep_text'] = df['Text'].apply(preprocess_text)
+    print("Preprocessing done")
+    vectorizer = TfidfVectorizer(sublinear_tf=True, min_df=5,ngram_range=(1, 2), stop_words='english')
+    features = vectorizer.fit_transform(df['prep_text']).toarray()
 
-X = features
-y = df['Label']
+    X = features
+    y = df['Label']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
 
-print(f'Rows used in training: {len(X_train)}')
-print(f'Rows used in evaluation: {len(X_test)}')
+    print(f'Rows used in training: {len(X_train)}')
+    print(f'Rows used in evaluation: {len(X_test)}')
 
 
-training_alg = {'model':LogisticRegression()}
-scores = {}
+    training_alg = {'model':LogisticRegression()}
+    scores = {}
 
-try:
-    model = training_alg['model'].fit(X_train, y_train, 
-        early_stopping_rounds=10,
-        eval_metric='merror',
-        eval_set=[(X_test, y_test)])
+    try:
+        model = training_alg['model'].fit(X_train, y_train, 
+            early_stopping_rounds=10,
+            eval_metric='merror',
+            eval_set=[(X_test, y_test)])
+        
+    except TypeError:
+        model = training_alg['model'].fit(X_train, y_train)
+        
+    training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
+    avg_score = round(np.mean(training_score) * 100, 2)
     
-except TypeError:
-    model = training_alg['model'].fit(X_train, y_train)
-    
-training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
-avg_score = round(np.mean(training_score) * 100, 2)
+    #Save the model and vectorizer
+    joblib.dump(training_alg["model"], "model.joblib")
+    joblib.dump(vectorizer, "vectorizer.joblib")
 
-joblib.dump(training_alg["model"], "model.joblib")
+    print(f"Training score: {training_score}")
+    print(f"Average score: {avg_score}")
 
-print(training_score)
+if __name__ == "__main__":
+    train()
