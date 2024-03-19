@@ -27,8 +27,8 @@ titles = [
     ["Diverse cabinet is no ‘get-out-of-jail-free card’ on racism, says ex-No 10 adviser", 0],
     ["‘Complex’ post-Brexit tax rules means price rises for UK wine drinkers", 0],
     ["Post-2019 UK cabinet ministers last average of eight months, study finds", 0],
-    ["Millions more in cash needed to fund UK’s open-banking watchdog", 0],
-    ["Victims of Norton Motorcycles pension fraud paid £9.4m compensation", 0]
+    ["Millions more in cash needed to fund UK’s open-banking watchdog", 2],
+    ["Victims of Norton Motorcycles pension fraud paid £9.4m compensation", 2]
 ]
 
 articles = [
@@ -93,7 +93,7 @@ for i in articles:
     print(f"Category: {cat}")
 
     if prediction == i[1]:
-        correctArticles += 1
+        correctArticles += 1 
 
 print()
 print(f"Correctly classified titles: {correctTitles} ({100 * correctTitles / len(titles)}%)")
