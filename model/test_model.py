@@ -93,7 +93,7 @@ for i in articles:
     print(f"Category: {cat}")
 
     if prediction == i[1]:
-        correctArticles += 1
+        correctArticles += 1 
 
 print()
 print(f"Correctly classified titles: {correctTitles} ({100 * correctTitles / len(titles)}%)")

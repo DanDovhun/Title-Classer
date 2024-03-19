@@ -58,13 +58,13 @@ def train():
     scores = {}
 
     try:
-        model = training_alg['model'].fit(X_train, y_train, 
+        training_alg['model'].fit(X_train, y_train, 
             early_stopping_rounds=10,
             eval_metric='merror',
             eval_set=[(X_test, y_test)])
         
     except TypeError:
-        model = training_alg['model'].fit(X_train, y_train)
+        training_alg['model'].fit(X_train, y_train)
         
     training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
     avg_score = round(np.mean(training_score) * 100, 2)
