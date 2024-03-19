@@ -15,7 +15,7 @@ nlp = spacy.load("en_core_web_sm")
 
 # May not be used directly in training, but is used to preprocessed raw data 
 # when transfering them from the csv file to the database
-def preprocess_text(txt:str):
+def preprocess_text(txt):
     txt = re.sub('[^a-zA-Z]', ' ', txt) 
     txt = txt.lower()
     txt = " ".join(txt.split()) 
