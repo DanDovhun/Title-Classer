@@ -18,15 +18,14 @@
       <form method="post">
         {% csrf_token %}
         <div class="search-container">
-          <textarea
-            class="search-input"
-            name="search-input"
-            placeholder="Enter the First paragraph of your article..."
-          ></textarea>
+          {{ form }}
+
           <button type="submit" class="search-button">Classify</button>
         </div>
       </form>
       {% if search_input %}
+      <h1>{{category}}</h1>
+      
       <div id="search-results">
         <h3 class="search-output">You searched for: {{ search_input }}</h3>
       </div>

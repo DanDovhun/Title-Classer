@@ -33,7 +33,7 @@ def preprocess_text(txt):
 
 def train():
     print("Loading data...")
-    con = sqlite3.connect("data/dataset.db")
+    con = sqlite3.connect("model/data/dataset.db")
     df = pd.read_sql_query("SELECT * FROM Dataset", con)
     con.close()
 
@@ -73,8 +73,8 @@ def train():
     print(f"Training time: {end-start}\n")
 
 def classify(text):
-    model = joblib.load("saved_model/model.joblib")
-    vectorizer = joblib.load("saved_model/vectorizer.joblib")
+    model = joblib.load("model/saved_model/model.joblib")
+    vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
     text = preprocess_text(text)
 
     reshaped = np.array([text])
