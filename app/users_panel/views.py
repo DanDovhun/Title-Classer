@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from model.model import classify
 
 def user_dashboard(request):
     if request.method == 'POST':
