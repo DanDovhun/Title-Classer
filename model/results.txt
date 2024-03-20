@@ -1,0 +1,36 @@
+titles
+Category: Sport
+Category: Sport
+Category: Politics
+Category: Technology
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Business
+Category: Business
+Category: Politics
+Category: Business
+Category: Business
+
+articles
+Category: Entertainment
+Category: Technology
+Category: Entertainment
+Category: Technology
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Sport
+Category: Politics
+Category: Business
+Category: Politics
+Category: Business
+Category: Business
+
+Correctly classified titles: 7 (46.666666666666664%)
+Correctly classified articles: 9 (60.0%)

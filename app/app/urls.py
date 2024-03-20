@@ -4,6 +4,7 @@ from django.urls import path
 from users_panel import views as userViews
 from admin_panel import views as adminViews
 
+
 urlpatterns = [
     
     path('', userViews.user_dashboard, name='user'),
