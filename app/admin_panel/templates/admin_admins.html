@@ -3,6 +3,7 @@
   <h2>Admin Management</h2>
   <div class="container">
     <div class="createAdmin">
+      <h4>Create New Admin</h4>
       <form action="{% url 'admin_admins' %}" method="post">
         {% csrf_token %}
         <label for="username">Username:</label>

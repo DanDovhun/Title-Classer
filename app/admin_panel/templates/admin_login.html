@@ -11,12 +11,8 @@
     />
   </head>
   <body>
-    <h2>Welcome to the Admin Portal</h2>
-    {% if error_message %}
-    <p>{{ error_message }}</p>
-    {% endif %}
-
     <div class="loginAdmin">
+      <h2>Welcome to the Admin Portal</h2>
       <form action="{% url 'admin_login' %}" method="post">
         {% csrf_token %}
         <label for="username">Username:</label>
@@ -35,6 +31,10 @@
           placeholder="Password"
           required
         />
+        {% if error_message %}
+        <p class="loginError">{{ error_message }}</p>
+        {% endif %}
+
         <button type="submit" name="create_admin">Login</button>
       </form>
     </div>
