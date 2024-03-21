@@ -72,6 +72,51 @@ def train():
 
     print(f"Training time: {end-start}\n")
 
+def add_report(text, label):
+    con = sqlite3.connect("model/data/dataset.db")
+    cur = con.cursor()
+
+    prepped = preprocess_text(text)
+
+    cur.execute("INSERT INTO Dataset VALUES(?, ?, ?)", (text, prepped, label))
+    con.commit()
+
+    con.close()
+
+def csv_to_sql():
+    con = sqlite3.connect("model/data/dataset.db")
+    cur = con.cursor()
+
+    # Load data
+    df = pd.read_csv('data/df_file.csv')
+    df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
+
+    df.drop_duplicates(ignore_index = True, inplace=True)
+
+    df['prep_text'] = df['Text'].apply(preprocess_text)
+    print("Preprocessing done")
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS Dataset(
+        text TEXT,
+        prep_text TEXT,
+        label ITEGER
+    )
+    """)
+
+    articles = []
+
+    # Arranging a tuple of values to be inserted into the database in this order:
+    # unprocessed text, preprocessed text, label
+    for index, row in df.iterrows():
+        articles.append((row["Text"], row["prep_text"], row["Label"]))
+
+    cur.executemany("INSERT INTO Dataset VALUES(?, ?, ?)", articles)
+    con.commit()
+
+    print("Done")
+    con.close()
+
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
     vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
