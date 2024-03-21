@@ -4,6 +4,3 @@ __pycache__/
 
 # Ignore venv
 myenv/
-
-#db
-app/*.sqlite3
