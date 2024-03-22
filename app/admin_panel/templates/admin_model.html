@@ -9,8 +9,6 @@
           <p>Here you can see the status of the model.</p>
         </div>
         <div>
-          <p class="modelText">The model is up to date</p>
-          <button>Reload</button>
         </div>
       </li>
       <li>
@@ -22,8 +20,8 @@
         <div>
           <button onclick="retrain()">Retrain Model</button>
           <p class="modelText">
-            Old Model accuracy: <br />
-            New model Accuracy:
+            Old Model accuracy: {{ old_acc }} <br />
+            New model Accuracy: {{ accuracy }}
           </p>
         </div>
       </li>
@@ -51,7 +49,7 @@
 
     <script>
       function retrain() {
-        alert("Hello world")
+        window.location.href = "http://localhost:8000/retrain"
       }
     </script>
     {% endblock %}
