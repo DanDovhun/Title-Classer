@@ -35,7 +35,7 @@ def preprocess_text(txt):
 def train():
     print("Loading data...")
     con = sqlite3.connect("model/data/dataset.db")
-    df = pd.read_sql_query("SELECT * FROM Dataset", con)
+    df = pd.read_sql_query("SELECT * FROM Dataset ORDER BY label", con)
     con.close()
 
     print("Vectorising...")
