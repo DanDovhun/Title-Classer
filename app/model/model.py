@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
+from sklearn.metrics import confusion_matrix, recall_score, precision_score, accuracy_score, f1_score
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -60,17 +61,28 @@ def train():
     except TypeError:
         training_alg['model'].fit(X_train, y_train)
 
-    training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
-    avg_score = round(np.mean(training_score) * 100, 2)
+    #training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
+    #avg_score = round(np.mean(training_score) * 100, 2)
 
-    print(f"\nTraining score: {training_score}")
-    print(f"Average score: {avg_score}")
+    #print(f"\nTraining score: {training_score}")
+    #print(f"Average score: {avg_score}")
+        
+    preds = training_alg["model"].predict(X_test)
+    score = training_alg["model"].score(X_test, y_test)
+    conf_mat = confusion_matrix(y_test, preds)
+    
+    recall = recall_score(y_test, preds, average="weighted")
+    prec = precision_score(y_test, preds, average="weighted")
+    acc = accuracy_score(y_test, preds)
+    f_one = f1_score(y_test, preds, average="weighted")
 
-    joblib.dump(training_alg["model"], "saved_model/model.joblib")
-    joblib.dump(vectorizer, "saved_model/vectorizer.joblib")
-    end = datetime.datetime.now()
+    joblib.dump(training_alg["model"], "model/saved_model/model.joblib")
+    joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
+    training_time = datetime.datetime.now() - start
 
-    print(f"Training time: {end-start}\n")
+    print(f"Training time: {training_time}\n")
+
+    return training_time, score, conf_mat, recall, prec, acc, f_one
 
 def add_report(text, label):
     con = sqlite3.connect("model/data/dataset.db")
@@ -100,7 +112,7 @@ def csv_to_sql():
     CREATE TABLE IF NOT EXISTS Dataset(
         text TEXT,
         prep_text TEXT,
-        label ITEGER
+        label INTEGER
     )
     """)
 
@@ -128,3 +140,6 @@ def classify(text):
     prediction = model.predict(transformed)
 
     return prediction
+
+if __name__ == "__main__":
+    train()

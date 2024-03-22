@@ -34,6 +34,7 @@ def admin_dashboard(request):
 
 @login_required
 def admin_model(request):
+      print("Hello world")
       return render(request, 'admin_model.html')
 
 @login_required
