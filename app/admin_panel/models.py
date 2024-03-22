@@ -17,3 +17,12 @@ class AdminUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+class ModelInfo(models.Model):
+    conf_matrix = models.CharField(max_length=255)
+    training_time = models.CharField(max_length=255)
+    old_acc = models.FloatField(null=True)
+    accuracy = models.FloatField()
+    precision = models.FloatField()
+    recall = models.FloatField()
+    f_one = models.FloatField()
