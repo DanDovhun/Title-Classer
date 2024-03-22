@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,17 +20,9 @@
         {% csrf_token %}
         <div class="search-container">
           {{ form }}
-
           <button type="submit" class="search-button">Classify</button>
         </div>
       </form>
-      {% if search_input %}
-      <h1>{{category}}</h1>
-      
-      <div id="search-results">
-        <h3 class="search-output">You searched for: {{ search_input }}</h3>
-      </div>
-      {% endif %}
     </div>
     <p>
       Are you an Admin for this website? <a href="{% url 'admin' %}">Login</a>

@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Prediction</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/user_styles.css' %}"
+    />
+  </head>
+  <body>
+    {% include 'user_navbar.html' %}
+    <h2>Prediction Details</h2>
+    <div class="container">
+      <h3>Search Input: {{ search_input }}</h3>
+      <h3>Category: {{ category }}</h3>
+      <h3>Report Wrong Prediction</h3>
+      <button onclick="openReportModal()">Report</button>
+      <dialog id="reportDialog">
+        <form method="post" id="reportForm">
+          {% csrf_token %} {{ report_form.as_p }}
+          <button type="submit" name="report">Submit Report</button>
+        </form>
+      </dialog>
+    </div>
+    <p>
+      Are you an Admin for this website? <a href="{% url 'admin' %}">Login</a>
+    </p>
+
+    <script>
+      var reportDialog = document.getElementById("reportDialog");
+      function openReportModal() {
+        reportDialog.showModal();
+      }
+
+      reportDialog.addEventListener("click", function (event) {
+        if (event.target === reportDialog) {
+          reportDialog.close();
+        }
+      });
+    </script>
+  </body>
+</html>
