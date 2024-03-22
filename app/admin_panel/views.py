@@ -53,11 +53,11 @@ def admin_model(request):
     return render(request, 'admin_model.html', {
         "conf_mat": model_info.conf_matrix,
         "train_time": model_info.training_time,
-        "old_acc": acc[0],
-        "accuracy": model_info.accuracy,
-        "precision": model_info.precision,
-        "recall": model_info.recall,
-        "f_one": model_info.f_one
+        "old_acc": round(100 * acc[0], 5),
+        "accuracy": round(100 * model_info.accuracy, 5),
+        "precision": round(100 * model_info.precision, 5),
+        "recall": round(100 * model_info.recall, 5),
+        "f_one": round(100 * model_info.f_one, 5)
     })
 
 @login_required
