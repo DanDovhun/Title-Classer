@@ -50,7 +50,7 @@ def train():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
 
-    training_alg = {'model':LogisticRegression()}
+    training_alg = {'model':LogisticRegression(multi_class='ovr')}
 
     try:
         training_alg['model'].fit(X_train, y_train, 
