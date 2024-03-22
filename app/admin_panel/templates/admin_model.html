@@ -8,8 +8,17 @@
           <h4>MODEL STATUS</h4>
           <p>Here you can see the status of the model.</p>
         </div>
+
         <div>
+          <p class="score">F1 Score: {{ f_one }}</p>
+          <p class="score">Accuracy: {{ accuracy}}</p>
+          <p class="score">Precision: {{ precision}}</p>
+          <p class="score">Accuracy: {{ recall}}</p>
         </div>
+      </li>
+      <li>
+        {% load static%}
+        <img src="{% static 'conf_mat.png' %}" class="conf_mat">
       </li>
       <li>
         <div>
