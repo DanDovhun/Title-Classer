@@ -3,8 +3,9 @@ from .models import AdminUser, ModelInfo
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from model.model import train
+from model.model import train, add_report
 from sklearn.metrics import ConfusionMatrixDisplay  
+from .forms import EnterArticleForm
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -39,6 +40,16 @@ def admin_dashboard(request):
 
 @login_required
 def admin_model(request):
+    if request.method == "POST":
+        form = EnterArticleForm(request.POST)
+
+        if form.is_valid():
+            text = form.cleaned_data["text"]
+            label = form.cleaned_data["labels"]
+
+            add_report(text, label)
+    
+    form = EnterArticleForm()
     ai_model = ModelInfo.objects.all()
     model_info = ai_model[0]
 
@@ -57,7 +68,8 @@ def admin_model(request):
         "accuracy": round(100 * model_info.accuracy, 5),
         "precision": round(100 * model_info.precision, 5),
         "recall": round(100 * model_info.recall, 5),
-        "f_one": round(100 * model_info.f_one, 5)
+        "f_one": round(100 * model_info.f_one, 5),
+        "form": form
     })
 
 @login_required
