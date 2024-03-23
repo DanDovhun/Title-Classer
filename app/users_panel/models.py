@@ -4,11 +4,11 @@ from django.db import models
 class UserReport(models.Model):
     USER_PREDICTION_CATEGORIES = [
         ("", "Choose a Category"),
-        ("cat_bus", "Business"),
-        ("cat_ent", "Entertainment"),
-        ("cat_pol", "Politics"),
-        ("cat_sport", "Sports"),
-        ("cat_tech", "Technology"),
+        ("Business", "Business"),
+        ("Entertainment", "Entertainment"),
+        ("Politics", "Politics"),
+        ("Sports", "Sports"),
+        ("Technology", "Technology"),
     ]
 
     reportParagraph = models.TextField()

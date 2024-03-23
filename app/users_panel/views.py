@@ -39,12 +39,10 @@ def user_prediction(request):
     if request.method == "POST":
         report_form = ReportForm(request.POST)
         if report_form.is_valid():
-            print(f"is valid")
             report = report_form.save()
             return redirect("user_prediction")
         else:
             return render(request, "user_prediction.html", {"report_form": report_form})
-
     else:
         search_input = request.session.get("search_input", "")
         category = request.session.get("category", "")
