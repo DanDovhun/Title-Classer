@@ -17,7 +17,7 @@ class ArticleForm(forms.Form):
 class ReportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
-        # Setting the readonly values for The user report
+        # Setting the readonly values for The user report based on input
         self.initial["reportParagraph"] = kwargs.get("initial", {}).get(
             "reportParagraph", ""
         )
@@ -35,16 +35,16 @@ class ReportForm(forms.ModelForm):
             "reportComment",
         ]
         labels = {
-            "reportParagraph": "Paragraph",
-            "reportModelPrediction": "Model Prediction",
-            "reportUserPrediction": "User Prediction",
-            "reportURL": "URL (Optional)",
-            "reportComment": "Comment (Optional)",
+            "reportParagraph": "Your Input: ",
+            "reportModelPrediction": "Predicted Category:",
+            "reportUserPrediction": "Your Category:",
+            "reportURL": "URL (Optional):",
+            "reportComment": "Comment (Optional):",
         }
 
         widgets = {
             "reportParagraph": forms.Textarea(
-                attrs={"class": "reportParagraph", "readonly": True}
+                attrs={"class": "reportParagraph", "readonly": True, "rows": 5}
             ),
             "reportModelPrediction": forms.TextInput(
                 attrs={"class": "reportModelPrediction", "readonly": True}
@@ -59,6 +59,7 @@ class ReportForm(forms.ModelForm):
                 attrs={
                     "class": "reportComment",
                     "placeholder": "Enter additional comments",
+                    "rows": 5,
                 }
             ),
         }
