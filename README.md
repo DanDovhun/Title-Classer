@@ -14,23 +14,33 @@ To classify the articles we're using logistic regression with the help One-vs-Re
 ## Run
 ### 1.) Clone directory
 Via SSH:
-```$ git clone git@github.com:AI-Project-Reexam/TitleClasser.git```
+```
+$ git clone git@github.com:AI-Project-Reexam/TitleClasser.git
+```
 
 Via HTTPS:
-```$ git clone https://github.com/AI-Project-Reexam/TitleClasser.git```
+```
+$ git clone https://github.com/AI-Project-Reexam/TitleClasser.git
+```
 
 ### Run
 ##### Move to the app folder: 
-```$ cd path/to/TitleClasser/app```
+```
+$ cd path/to/TitleClasser/app
+```
 
 #### a.) Docker
 Assuming you already have docker installed on your machine, you can just follow these steps:
 
 ##### 1.) Build the image:
-```$ docker build -t title_classer .```
+```
+$ docker build -t title_classer .
+```
 
 ##### 2.) Run:
-```$ docker run -it -p 8000:8000 title_classer```
+```
+$ docker run -it -p 8000:8000 title_classer
+```
 
 #### b.) Outside of Docker:
 ##### 1.) Get packages:
@@ -42,13 +52,19 @@ $ python -m spacy download en_core_web_sm
 ```
 
 ###### Seaborn:
-```$ pip install seaborn```
+```
+$ pip install seaborn
+```
 
 ###### Rest of the requirements:
-```$ pip install --no-cache-dir -r requirements.txt```
+```
+$ pip install --no-cache-dir -r requirements.txt
+```
 
 ##### Run the application:
-```$ python manage.py runserver```
+```
+$ python manage.py runserver
+```
 
 ## Tools and Technologies:
 * Website:
