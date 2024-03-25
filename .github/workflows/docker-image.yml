@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file app/Dockerfile --tag title_classer:$(date +%s)
+      run: docker build . --file .app/Dockerfile --tag title_classer:$(date +%s)
