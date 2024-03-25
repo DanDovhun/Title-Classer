@@ -4,8 +4,8 @@ sqlparse==0.4.4
 tzdata==2024.1
 numpy
 scikit-learn
-spacy>=2.2.0,<3.0.0
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz#egg=en_core_web_sm
 pandas==2.2.1
 joblib==1.2.0
 matplotlib == 3.7.1
+tensorflow
+keras
