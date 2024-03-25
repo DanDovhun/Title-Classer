@@ -20,8 +20,8 @@ Via HTTPS:
 ```$ git clone https://github.com/AI-Project-Reexam/TitleClasser.git```
 
 ### Run
-##### 0.) Move to the app folder: 
-```cd path/to/TitleClasser/app```
+##### Move to the app folder: 
+```$ cd path/to/TitleClasser/app```
 
 #### a.) Docker
 Assuming you already have docker installed on your machine, you can just follow these steps:
