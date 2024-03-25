@@ -50,7 +50,7 @@ def train():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
 
-    training_alg = {'model':LogisticRegression(multi_class='ovr')}
+    training_alg = {'model':LogisticRegression(multi_class='ovr', C=2)}
 
     try:
         training_alg['model'].fit(X_train, y_train, 
@@ -60,12 +60,6 @@ def train():
             
     except TypeError:
         training_alg['model'].fit(X_train, y_train)
-
-    #training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
-    #avg_score = round(np.mean(training_score) * 100, 2)
-
-    #print(f"\nTraining score: {training_score}")
-    #print(f"Average score: {avg_score}")
         
     preds = training_alg["model"].predict(X_test)
     score = training_alg["model"].score(X_test, y_test)
@@ -129,6 +123,17 @@ def csv_to_sql():
     print("Done")
     con.close()
 
+def second_greatest(arr):
+    largest = np.max(arr[0])
+    index = 0
+    second = np.min(arr[0])
+
+    for i in range(0, len(arr[0])):
+        if arr[0][i] > second and arr[0][i] < largest:
+            index = i
+
+    return index
+
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
     vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
@@ -138,8 +143,14 @@ def classify(text):
     transformed = vectorizer.transform(reshaped)
 
     prediction = model.predict(transformed)
+    probs = model.predict_proba(transformed)
 
-    return prediction
+    second = second_greatest(model.predict_proba(transformed))
+
+    print("Hello world")
+    print(probs)
+
+    return prediction, second, probs[0][second]
 
 if __name__ == "__main__":
     train()

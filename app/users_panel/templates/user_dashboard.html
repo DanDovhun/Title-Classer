@@ -24,7 +24,11 @@
         </div>
       </form>
       {% if search_input %}
-      <h1>{{category}}</h1>
+      <h1>Class: {{category}}</h1>
+
+      {% if second_exists %}
+        <h3>Other possibility: {{second}} ({{prob}}%)</h3>
+      {% endif %}
       
       <div id="search-results">
         <h3 class="search-output">You searched for: {{ search_input }}</h3>
