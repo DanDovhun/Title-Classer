@@ -31,7 +31,7 @@ $ cd path/to/TitleClasser/app
 
 #### a.) Docker
 Assuming you already have docker installed on your machine, you can just follow these steps:
-
+##### Build your own container
 ##### 1.) Build the image:
 ```
 $ docker build -t title_classer .
