@@ -36,7 +36,9 @@ def admin_logout(request):
 
 @login_required
 def admin_dashboard(request):
-      return render(request, 'admin_dashboard.html')
+    #return render(request, 'admin_dashboard.html')
+    print("Hello world")
+    return redirect("/admin/model")
 
 @login_required
 def admin_model(request):
