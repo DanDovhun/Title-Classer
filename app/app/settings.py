@@ -13,7 +13,7 @@ SECRET_KEY = "key"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LOGIN_URL = '/login' #This is here so that the app redirects when Admin pages are accessed without login
 # Application definition
