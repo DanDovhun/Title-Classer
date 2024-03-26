@@ -10,6 +10,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
+from sklearn.metrics import confusion_matrix, recall_score, precision_score, accuracy_score, f1_score
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -34,7 +35,7 @@ def preprocess_text(txt):
 def train():
     print("Loading data...")
     con = sqlite3.connect("model/data/dataset.db")
-    df = pd.read_sql_query("SELECT * FROM Dataset", con)
+    df = pd.read_sql_query("SELECT * FROM Dataset ORDER BY label", con)
     con.close()
 
     print("Vectorising...")
@@ -49,7 +50,7 @@ def train():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
 
-    training_alg = {'model':LogisticRegression()}
+    training_alg = {'model':LogisticRegression(multi_class='ovr', C=2)}
 
     try:
         training_alg['model'].fit(X_train, y_train, 
@@ -59,18 +60,23 @@ def train():
             
     except TypeError:
         training_alg['model'].fit(X_train, y_train)
+        
+    preds = training_alg["model"].predict(X_test)
+    score = training_alg["model"].score(X_test, y_test)
+    conf_mat = confusion_matrix(y_test, preds)
+    
+    recall = recall_score(y_test, preds, average="weighted")
+    prec = precision_score(y_test, preds, average="weighted")
+    acc = accuracy_score(y_test, preds)
+    f_one = f1_score(y_test, preds, average="weighted")
 
-    training_score = cross_val_score(training_alg['model'], X_train, y_train, cv=5, scoring='accuracy') 
-    avg_score = round(np.mean(training_score) * 100, 2)
+    joblib.dump(training_alg["model"], "model/saved_model/model.joblib")
+    joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
+    training_time = datetime.datetime.now() - start
 
-    print(f"\nTraining score: {training_score}")
-    print(f"Average score: {avg_score}")
+    print(f"Training time: {training_time}\n")
 
-    joblib.dump(training_alg["model"], "saved_model/model.joblib")
-    joblib.dump(vectorizer, "saved_model/vectorizer.joblib")
-    end = datetime.datetime.now()
-
-    print(f"Training time: {end-start}\n")
+    return training_time, score, conf_mat, recall, prec, acc, f_one
 
 def add_report(text, label):
     con = sqlite3.connect("model/data/dataset.db")
@@ -100,7 +106,7 @@ def csv_to_sql():
     CREATE TABLE IF NOT EXISTS Dataset(
         text TEXT,
         prep_text TEXT,
-        label ITEGER
+        label INTEGER
     )
     """)
 
@@ -117,6 +123,17 @@ def csv_to_sql():
     print("Done")
     con.close()
 
+def second_greatest(arr):
+    largest = np.max(arr[0])
+    index = 0
+    second = np.min(arr[0])
+
+    for i in range(0, len(arr[0])):
+        if arr[0][i] > second and arr[0][i] < largest:
+            index = i
+
+    return index
+
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
     vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
@@ -126,5 +143,14 @@ def classify(text):
     transformed = vectorizer.transform(reshaped)
 
     prediction = model.predict(transformed)
+    probs = model.predict_proba(transformed)
 
-    return prediction
+    second = second_greatest(model.predict_proba(transformed))
+
+    print("Hello world")
+    print(probs)
+
+    return prediction, second, probs[0][second]
+
+if __name__ == "__main__":
+    train()

@@ -14,22 +14,39 @@ def user_dashboard(request):
         4: "Business",
     }
 
+    possibly_other = False
+
+    if request.method == "POST":
+        form = ArticleForm(request.POST)
+
     if request.method == "POST":
         article_form = ArticleForm(request.POST)
 
         if article_form.is_valid():
             search_input = article_form.cleaned_data["paragraph"]
 
-            cat = classify(search_input)
+            cat, second, second_prob = classify(search_input)
             category = categories[cat[0]]
+            second_likely = categories[second]
 
-            print(category)
+            if second_prob > 0.2:
+                possibly_other = True
 
             request.session["search_input"] = search_input
             request.session["category"] = category
+            request.session["second"] = second_likely
+            request.session["prob"] = round(second_prob * 100, 2)
+            request.session["second_exists"] = possibly_other
 
             return redirect("user_prediction")
 
+        """return redirect(request, 'user_dashboard.html', {
+            'search_input': search_input,
+            "category": category,
+            "second": second_likely,
+            "prob": round(second_prob*100, 2),
+            "second_exists": possibly_other,
+        })"""
     else:
         article_form = ArticleForm()
         return render(request, "user_dashboard.html", {"form": article_form})

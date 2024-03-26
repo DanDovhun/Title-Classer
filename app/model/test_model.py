@@ -88,8 +88,10 @@ for i in articles:
     transformed = vectorizer.transform(reshaped)
     prediction = model.predict(transformed)
     cat = categories[str(prediction[0])]
+    conf = np.max(model.predict_proba(transformed))
 
     print(f"Category: {cat}")
+    print(f"Confidence score: {model.predict_proba(transformed)}")
 
     if prediction == i[1]:
         correctArticles += 1 
