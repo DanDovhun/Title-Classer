@@ -1,7 +1,30 @@
 {% extends 'admin_dashboard.html' %} {% block content %}
 <div>
   <h2>User Reports</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Input</th>
+        <th>Model Prediction</th>
+        <th>User Prediction</th>
+        <th>Link</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for report in user_reports %}
+      <tr>
+        <td>{{report.reportParagraph}}</td>
+        <td>{{report.reportModelPrediction}}</td>
+        <td>{{report.reportUserPrediction}}</td>
+        <td>
+          <a href="{{ report.reportURL}}" target="_blank">Link</a>
+        </td>
+        <td></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-  <h3>Page not Complete</h3>
   {% endblock %}
 </div>
