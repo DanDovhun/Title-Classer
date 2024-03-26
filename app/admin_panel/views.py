@@ -37,7 +37,13 @@ def admin_model(request):
 
 
 @login_required
+@csrf_protect
 def admin_reports(request):
+    if request.method == "POST":
+        if "reject_report" in request.POST:
+            report_id = request.POST.get("report_id")
+            UserReport.objects.filter(id=report_id).delete()
+            return redirect("admin_reports")
     user_reports = UserReport.objects.all()
     return render(request, "admin_reports.html", {"user_reports": user_reports})
 

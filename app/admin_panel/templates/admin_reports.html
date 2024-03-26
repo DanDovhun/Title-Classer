@@ -20,7 +20,15 @@
         <td>
           <a href="{{ report.reportURL}}" target="_blank">Link</a>
         </td>
-        <td></td>
+        <td class="action-btns">
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{report.id}}" />
+            <button class="reject-btn" type="submit" name="reject_report">
+              Reject
+            </button>
+          </form>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

@@ -7,7 +7,7 @@ class UserReport(models.Model):
         ("Business", "Business"),
         ("Entertainment", "Entertainment"),
         ("Politics", "Politics"),
-        ("Sports", "Sports"),
+        ("Sport", "Sport"),
         ("Technology", "Technology"),
     ]
 
