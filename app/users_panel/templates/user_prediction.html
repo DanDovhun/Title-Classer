@@ -21,6 +21,9 @@
       </label>
       <textarea class="prediction-input" readonly>{{ search_input}}</textarea>
       <h2>Predicted Category : {{category}}</h2>
+      {% if second_exists %}
+      <h3>Other possibility: {{second}} ({{prob}}%)</h3>
+      {% endif %}
       <div class="container-btn">
         <a href="{% url 'user' %}">
           <button class="newPrediction-btn">New Prediction</button>
