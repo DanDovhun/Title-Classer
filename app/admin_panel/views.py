@@ -90,6 +90,30 @@ def admin_reports(request):
             report_id = request.POST.get("report_id")
             UserReport.objects.filter(id=report_id).delete()
             return redirect("admin_reports")
+        
+
+        elif "accept_report" in request.POST:
+            report_id = request.POST.get("report_id")
+            report = UserReport.objects.get(id=report_id)
+
+            text = report.reportParagraph
+            actual_label = report.reportUserPrediction
+
+            categories = {
+                "Politics": 0,
+                "Sports": 1,
+                "Technology": 2,
+                "Entertainment": 3,
+                "Business": 4,
+            }
+
+            cat = categories[actual_label]
+
+            add_report(text, cat)
+
+            UserReport.objects.filter(id=report_id).delete()
+            return redirect("admin_reports")
+
     user_reports = UserReport.objects.all()
     return render(request, "admin_reports.html", {"user_reports": user_reports})
 
