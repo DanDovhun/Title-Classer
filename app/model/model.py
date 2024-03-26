@@ -34,7 +34,7 @@ def preprocess_text(txt):
 
 def train():
     print("Loading data...")
-    con = sqlite3.connect("model/data/dataset.db")
+    con = sqlite3.connect("app/model/data/dataset.db")
     df = pd.read_sql_query("SELECT * FROM Dataset ORDER BY label", con)
     con.close()
 
@@ -70,8 +70,8 @@ def train():
     acc = accuracy_score(y_test, preds)
     f_one = f1_score(y_test, preds, average="weighted")
 
-    joblib.dump(training_alg["model"], "model/saved_model/model.joblib")
-    joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
+    joblib.dump(training_alg["model"], "app/model/saved_model/model.joblib")
+    joblib.dump(vectorizer, "app/model/saved_model/vectorizer.joblib")
     training_time = datetime.datetime.now() - start
 
     print(f"Training time: {training_time}\n")
@@ -79,7 +79,7 @@ def train():
     return training_time, score, conf_mat, recall, prec, acc, f_one
 
 def add_report(text, label):
-    con = sqlite3.connect("model/data/dataset.db")
+    con = sqlite3.connect("app/model/data/dataset.db")
     cur = con.cursor()
 
     prepped = preprocess_text(text)
@@ -90,7 +90,7 @@ def add_report(text, label):
     con.close()
 
 def csv_to_sql():
-    con = sqlite3.connect("model/data/dataset.db")
+    con = sqlite3.connect("app/model/data/dataset.db")
     cur = con.cursor()
 
     # Load data
@@ -135,8 +135,8 @@ def second_greatest(arr):
     return index
 
 def classify(text):
-    model = joblib.load("model/saved_model/model.joblib")
-    vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
+    model = joblib.load("app/model/saved_model/model.joblib")
+    vectorizer = joblib.load("app/model/saved_model/vectorizer.joblib")
     text = preprocess_text(text)
 
     reshaped = np.array([text])
