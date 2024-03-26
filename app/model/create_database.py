@@ -9,7 +9,7 @@ con = sqlite3.connect("data/dataset.db")
 cur = con.cursor()
 
 # Load data
-df = pd.read_csv('data/df_file.csv')
+df = pd.read_csv('app/data/df_file.csv')
 df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
 
 df.drop_duplicates(ignore_index = True, inplace=True)

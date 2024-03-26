@@ -1,19 +1,21 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
+from users_panel.models import UserReport
 from .models import AdminUser, ModelInfo
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from model.model import train, add_report
-from sklearn.metrics import ConfusionMatrixDisplay  
+from sklearn.metrics import ConfusionMatrixDisplay
 from .forms import EnterArticleForm
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 def admin_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         print("Received username:", username)
         print("Received password:", password)
 
@@ -21,23 +23,25 @@ def admin_login(request):
         if admin is not None:
             login(request, admin)
             print("Authentication successful")
-            return redirect('admin')
+            return redirect("admin_model")
         else:
             error_message = "Invalid username or password"
             print("Authentication failed")
-            return render(request, 'admin_login.html', {'error_message': error_message})
+            return render(request, "admin_login.html", {"error_message": error_message})
     else:
-        return render(request, 'admin_login.html')
+        return render(request, "admin_login.html")
 
-         
+
 def admin_logout(request):
     logout(request)
-    return redirect('admin_login')
+    return redirect("admin_login")
+
 
 @login_required
 def admin_dashboard(request):
-    #return render(request, 'admin_dashboard.html')
+    # return render(request, 'admin_dashboard.html')
     return redirect("/admin/model")
+
 
 @login_required
 def admin_model(request):
@@ -49,7 +53,7 @@ def admin_model(request):
             label = form.cleaned_data["labels"]
 
             add_report(text, label)
-    
+
     form = EnterArticleForm()
     ai_model = ModelInfo.objects.all()
     model_info = ai_model[0]
@@ -62,40 +66,56 @@ def admin_model(request):
     else:
         acc.append(round(model_info.old_acc, 5))
 
-    return render(request, 'admin_model.html', {
-        "conf_mat": model_info.conf_matrix,
-        "train_time": model_info.training_time,
-        "old_acc": round(100 * acc[0], 5),
-        "accuracy": round(100 * model_info.accuracy, 5),
-        "precision": round(100 * model_info.precision, 5),
-        "recall": round(100 * model_info.recall, 5),
-        "f_one": round(100 * model_info.f_one, 5),
-        "form": form
-    })
+    return render(
+        request,
+        "admin_model.html",
+        {
+            "conf_mat": model_info.conf_matrix,
+            "train_time": model_info.training_time,
+            "old_acc": round(100 * acc[0], 5),
+            "accuracy": round(100 * model_info.accuracy, 5),
+            "precision": round(100 * model_info.precision, 5),
+            "recall": round(100 * model_info.recall, 5),
+            "f_one": round(100 * model_info.f_one, 5),
+            "form": form,
+        },
+    )
+
 
 @login_required
+@csrf_protect
 def admin_reports(request):
-      return render(request, 'admin_reports.html')
+    if request.method == "POST":
+        if "reject_report" in request.POST:
+            report_id = request.POST.get("report_id")
+            UserReport.objects.filter(id=report_id).delete()
+            return redirect("admin_reports")
+    user_reports = UserReport.objects.all()
+    return render(request, "admin_reports.html", {"user_reports": user_reports})
+
 
 @login_required
 @csrf_protect
 def admin_admins(request):
-    if request.method == 'POST':
-        if 'create_admin' in request.POST:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            email = request.POST.get('email')
+    if request.method == "POST":
+        if "create_admin" in request.POST:
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            email = request.POST.get("email")
             try:
-                AdminUser.objects.create_user(username=username, password=password, email=email)
-                return redirect('admin_admins')
+                AdminUser.objects.create_user(
+                    username=username, password=password, email=email
+                )
+                return redirect("admin_admins")
             except Exception as e:
                 print(f"Error creating admin user: {e}")
-        elif 'delete_admin' in request.POST:
-            admin_id = request.POST.get('admin_id')
+        elif "delete_admin" in request.POST:
+            admin_id = request.POST.get("admin_id")
             AdminUser.objects.filter(id=admin_id).delete()
-            return redirect('admin_admins')
+            return redirect("admin_admins")
     admin_users = AdminUser.objects.all()
-    return render(request, 'admin_admins.html', {'admin_users': admin_users})
+    return render(request, "admin_admins.html", {"admin_users": admin_users})
+
 
 @login_required
 def retrain(user):
@@ -104,10 +124,15 @@ def retrain(user):
     ai_model = ModelInfo.objects.all()
 
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 5))
-    sns.heatmap(conf_mat, cmap='Blues',
-                fmt='', annot=True, cbar=False,
-                annot_kws={'fontsize': 10, 'fontweight': 'bold'},
-                square=False)
+    sns.heatmap(
+        conf_mat,
+        cmap="Blues",
+        fmt="",
+        annot=True,
+        cbar=False,
+        annot_kws={"fontsize": 10, "fontweight": "bold"},
+        square=False,
+    )
 
     ax.set_title("Confusion Matrix")
     plt.tight_layout()
@@ -115,13 +140,13 @@ def retrain(user):
 
     if len(ai_model) == 0:
         model = ModelInfo(
-            conf_matrix = cf_loc,
-            training_time = training_time,
-            old_acc = -1,
-            accuracy = acc,
-            precision = prec,
-            recall = recall,
-            f_one = f_one
+            conf_matrix=cf_loc,
+            training_time=training_time,
+            old_acc=-1,
+            accuracy=acc,
+            precision=prec,
+            recall=recall,
+            f_one=f_one,
         )
 
         model.save()

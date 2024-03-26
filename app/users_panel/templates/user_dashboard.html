@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,7 +20,6 @@
         {% csrf_token %}
         <div class="search-container">
           {{ form }}
-
           <button type="submit" class="search-button">Classify</button>
         </div>
       </form>
@@ -27,16 +27,17 @@
       <h1>Class: {{category}}</h1>
 
       {% if second_exists %}
-        <h3>Other possibility: {{second}} ({{prob}}%)</h3>
+      <h3>Other possibility: {{second}} ({{prob}}%)</h3>
       {% endif %}
-      
+
       <div id="search-results">
         <h3 class="search-output">You searched for: {{ search_input }}</h3>
       </div>
       {% endif %}
     </div>
     <p>
-      Are you an Admin for this website? <a href="{% url 'admin' %}">Login</a>
+      Are you an Admin for this website?
+      <a href="{% url 'admin_model' %}">Login</a>
     </p>
   </body>
 </html>

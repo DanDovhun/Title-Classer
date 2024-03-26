@@ -1,7 +1,52 @@
 {% extends 'admin_dashboard.html' %} {% block content %}
 <div>
   <h2>User Reports</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Input</th>
+        <th>Model Prediction</th>
+        <th>User Prediction</th>
+        <th>Link</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for report in user_reports %}
+      <tr>
+        <td>{{report.reportParagraph}}</td>
+        <td>{{report.reportModelPrediction}}</td>
+        <td>{{report.reportUserPrediction}}</td>
+        <td>
+          <a href="{{ report.reportURL}}" target="_blank">Link</a>
+        </td>
+        <td class="action-btns">
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{report.id}}" />
+            <button class="expand" type="submit" name="expand_report">
+              Expand
+            </button>
+          </form>
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{report.id}}" />
+            <button class="reject-btn" type="submit" name="reject_report">
+              Reject
+            </button>
+          </form>
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{report.id}}" />
+            <button class="accept-btn" type="submit" name="accept_report">
+              Accept
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-  <h3>Page not Complete</h3>
   {% endblock %}
 </div>

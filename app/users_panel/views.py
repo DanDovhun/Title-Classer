@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from model.model import classify
 
-from .forms import ArticleForm
+from .forms import ArticleForm, ReportForm
+from .models import UserReport
+
 
 def user_dashboard(request):
     categories = {
@@ -9,16 +11,19 @@ def user_dashboard(request):
         1: "Sport",
         2: "Technology",
         3: "Entertainment",
-        4: "Business"
+        4: "Business",
     }
 
     possibly_other = False
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         form = ArticleForm(request.POST)
 
-        if form.is_valid():
-            search_input = form.cleaned_data["paragraph"]
+    if request.method == "POST":
+        article_form = ArticleForm(request.POST)
+
+        if article_form.is_valid():
+            search_input = article_form.cleaned_data["paragraph"]
 
             cat, second, second_prob = classify(search_input)
             category = categories[cat[0]]
@@ -27,20 +32,49 @@ def user_dashboard(request):
             if second_prob > 0.2:
                 possibly_other = True
 
-        else:
-            return redirect("/")
+            request.session["search_input"] = search_input
+            request.session["category"] = category
+            request.session["second"] = second_likely
+            request.session["prob"] = round(second_prob * 100, 2)
+            request.session["second_exists"] = possibly_other
 
-        return render(request, 'user_dashboard.html', {
+            return redirect("user_prediction")
+
+        """return redirect(request, 'user_dashboard.html', {
             'search_input': search_input,
             "category": category,
             "second": second_likely,
             "prob": round(second_prob*100, 2),
             "second_exists": possibly_other,
-        })
-
+        })"""
     else:
-        form = ArticleForm()
+        article_form = ArticleForm()
+        return render(request, "user_dashboard.html", {"form": article_form})
 
-        return render(request, 'user_dashboard.html', {
-            "form": form,
-        })
+
+def user_prediction(request):
+    if request.method == "POST":
+        report_form = ReportForm(request.POST)
+        if report_form.is_valid():
+            report = report_form.save()
+            return redirect("user_prediction")
+        else:
+            return render(request, "user_prediction.html", {"report_form": report_form})
+    else:
+        search_input = request.session.get("search_input", "")
+        category = request.session.get("category", "")
+        report_form = ReportForm(
+            initial={
+                "reportParagraph": search_input,
+                "reportModelPrediction": category,
+            }
+        )
+        return render(
+            request,
+            "user_prediction.html",
+            {
+                "search_input": search_input,
+                "category": category,
+                "report_form": report_form,
+            },
+        )

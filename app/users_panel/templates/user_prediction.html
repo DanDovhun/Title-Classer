@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Prediction</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/user_styles.css' %}"
+    />
+  </head>
+  <body>
+    {% include 'user_navbar.html' %}
+    <div class="container">
+      <h2>Prediction Details</h2>
+      <label for="prediction-input" class="prediction-input-label">
+        Your Input:
+      </label>
+      <textarea class="prediction-input" readonly>{{ search_input}}</textarea>
+      <h2>Predicted Category : {{category}}</h2>
+      {% if second_exists %}
+      <h3>Other possibility: {{second}} ({{prob}}%)</h3>
+      {% endif %}
+      <div class="container-btn">
+        <a href="{% url 'user' %}">
+          <button class="newPrediction-btn">New Prediction</button>
+        </a>
+        <button class="reportPrediction-btn" onclick="openReportModal()">
+          Report Prediction
+        </button>
+      </div>
+    </div>
+    <div>
+      <dialog class="report-dialog">
+        <h2>Report Prediction</h2>
+        <form method="post" class="report-form">
+          {% csrf_token %} {{ report_form.as_p }}
+          <button
+            type="button"
+            class="cancelReport-btn"
+            onclick="closeReportModal()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="submitReport-btn" name="reportSubmit">
+            Submit
+          </button>
+        </form>
+      </dialog>
+    </div>
+    <p>
+      Are you an Admin for this website?
+      <a href="{% url 'admin_model' %}">Login</a>
+    </p>
+
+    <script>
+      var reportDialog = document.querySelector(".report-dialog");
+      function openReportModal() {
+        reportDialog.showModal();
+      }
+
+      function closeReportModal() {
+        reportDialog.close();
+      }
+    </script>
+  </body>
+</html>
