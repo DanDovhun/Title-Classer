@@ -147,9 +147,6 @@ def classify(text):
 
     second = second_greatest(model.predict_proba(transformed))
 
-    print("Hello world")
-    print(probs)
-
     return prediction, second, probs[0][second]
 
 if __name__ == "__main__":
