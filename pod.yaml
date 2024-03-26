@@ -7,6 +7,9 @@ metadata:
 
 spec:
   containers:
-  - name: testpod
-    image: alpine:latest
-    command: ["ping", "8.8.8.8"]
+  - image: dandovhun/title_classer
+    name: title-classer-pod
+  restartPolicy: Always
+  imagePullSecrets:
+     - name: app-secret
+
