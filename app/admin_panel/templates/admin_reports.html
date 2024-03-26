@@ -24,8 +24,22 @@
           <form action="{% url 'admin_reports' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="report_id" value="{{report.id}}" />
+            <button class="expand" type="submit" name="expand_report">
+              Expand
+            </button>
+          </form>
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{report.id}}" />
             <button class="reject-btn" type="submit" name="reject_report">
               Reject
+            </button>
+          </form>
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{report.id}}" />
+            <button class="accept-btn" type="submit" name="accept_report">
+              Accept
             </button>
           </form>
         </td>
