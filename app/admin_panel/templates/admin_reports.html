@@ -1,52 +1,94 @@
 {% extends 'admin_dashboard.html' %} {% block content %}
+<h2>User Reports</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Input</th>
+      <th>Model Prediction</th>
+      <th>User Prediction</th>
+      <th>Link</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for report in user_reports %}
+    <tr>
+      <td>{{report.reportParagraph}}</td>
+      <td>{{report.reportModelPrediction}}</td>
+      <td>{{report.reportUserPrediction}}</td>
+      <td>
+        <a href="{{ report.reportURL }}" target="_blank">Link</a>
+      </td>
+      <td class="action-btns">
+        <button
+          class="expand-btn"
+          type="button"
+          onclick="openExpandReport('{{ report.id }}')"
+        >
+          Expand
+        </button>
+        <form action="{% url 'admin_reports' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="report_id" value="{{ report.id }}" />
+          <button class="reject-btn" type="submit" name="reject_report">
+            Reject
+          </button>
+        </form>
+        <form action="{% url 'admin_reports' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="report_id" value="{{ report.id }}" />
+          <button class="accept-btn" type="submit" name="accept_report">
+            Accept
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% for report in user_reports %}
 <div>
-  <h2>User Reports</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Input</th>
-        <th>Model Prediction</th>
-        <th>User Prediction</th>
-        <th>Link</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for report in user_reports %}
-      <tr>
-        <td>{{report.reportParagraph}}</td>
-        <td>{{report.reportModelPrediction}}</td>
-        <td>{{report.reportUserPrediction}}</td>
-        <td>
-          <a href="{{ report.reportURL}}" target="_blank">Link</a>
-        </td>
-        <td class="action-btns">
-          <form action="{% url 'admin_reports' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="report_id" value="{{report.id}}" />
-            <button class="expand" type="submit" name="expand_report">
-              Expand
-            </button>
-          </form>
-          <form action="{% url 'admin_reports' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="report_id" value="{{report.id}}" />
-            <button class="reject-btn" type="submit" name="reject_report">
-              Reject
-            </button>
-          </form>
-          <form action="{% url 'admin_reports' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="report_id" value="{{report.id}}" />
-            <button class="accept-btn" type="submit" name="accept_report">
-              Accept
-            </button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  {% endblock %}
+  <dialog id="expand-report-{{ report.id }}" class="expand-report">
+    <span onclick="closeExpandReport('{{ report.id }}')">&times;</span>
+    <label for="expandInput">Input: </label>
+    <textarea class="expandInput" name="expandInput" readonly>
+    {{report.reportParagraph}}</textarea
+    >
+    <label for="expandModel">Model Prediction:</label>
+    <input
+      class="expandModel"
+      name="expandModel"
+      value="{{ report.reportModelPrediction}}"
+    />
+    <label for="expandUser">Model Prediction:</label>
+    <input
+      class="expandUser"
+      name="expandUser"
+      value="{{ report.reportUserPrediction}}"
+    />
+    <label for="expandUrl">Link: </label>
+    <input
+      class="expandUrl"
+      name="expandUrl"
+      value="{{ report.reportURL}}"
+      readonly
+    />
+    <label for="expandComment">Comment: </label>
+    <textarea class="expandComment" name="expandComment" readonly>
+    {{ report.reportComment}}</textarea
+    >
+  </dialog>
 </div>
+{% endfor %}
+<script>
+  function openExpandReport(reportId) {
+    var dialog = document.getElementById("expand-report-" + reportId);
+    dialog.showModal();
+  }
+
+  function closeExpandReport(reportId) {
+    var dialog = document.getElementById("expand-report-" + reportId);
+    dialog.close();
+  }
+</script>
+{% endblock %}
