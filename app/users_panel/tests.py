@@ -1,4 +1,7 @@
 from django.test import TestCase
+from django.contrib.auth.models import User
+from django.test import Client
+from admin_panel.models import AdminUser
 
 import model.model as mdl
 

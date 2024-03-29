@@ -32,7 +32,7 @@ def preprocess_text(txt):
         
     return " ".join(tokens_filtered)
 
-def train():
+def train(save):
     print("Loading data...")
     con = sqlite3.connect("app/model/data/dataset.db")
     df = pd.read_sql_query("SELECT * FROM Dataset ORDER BY label", con)
@@ -70,8 +70,10 @@ def train():
     acc = accuracy_score(y_test, preds)
     f_one = f1_score(y_test, preds, average="weighted")
 
-    joblib.dump(training_alg["model"], "app/model/saved_model/model.joblib")
-    joblib.dump(vectorizer, "app/model/saved_model/vectorizer.joblib")
+    if save:
+        joblib.dump(training_alg["model"], "app/model/saved_model/model.joblib")
+        joblib.dump(vectorizer, "app/model/saved_model/vectorizer.joblib")
+    
     training_time = datetime.datetime.now() - start
 
     print(f"Training time: {training_time}\n")
