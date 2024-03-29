@@ -126,6 +126,9 @@ def admin_admins(request):
             username = request.POST.get("username")
             password = request.POST.get("password")
             email = request.POST.get("email")
+
+            print(request.POST)
+
             try:
                 AdminUser.objects.create_user(
                     username=username, password=password, email=email
@@ -144,7 +147,7 @@ def admin_admins(request):
 @login_required
 def retrain(user):
     cf_loc = "admin_panel/static/conf_mat.png"
-    training_time, score, conf_mat, recall, prec, acc, f_one = train()
+    training_time, score, conf_mat, recall, prec, acc, f_one = train(save=True)
     ai_model = ModelInfo.objects.all()
 
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 5))
