@@ -1,3 +1,17 @@
+:root {
+  --background-main: #1c2026;
+  --background-secondary: #222831;
+  --background-form: #31363f;
+  --text-color: #ccc;
+  --text-button: #fff;
+  --button-blue: #0275d8;
+  --button-blue-hover: #05559b;
+  --button-green: #28a745;
+  --button-green-hover: #218838;
+  --button-red: #dc3545;
+  --button-red-hover: #b4303e;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #1c2026;
@@ -89,7 +103,7 @@ html {
 }
 
 .loginAdmin button {
-  background-color: darkblue;
+  background-color: var(--button-blue);
   width: 100px;
   height: 40px;
   color: white;
@@ -100,7 +114,7 @@ html {
 }
 
 .loginAdmin button:hover {
-  background-color: rgb(27, 27, 175);
+  background-color: var(--button-blue-hover);
   cursor: pointer;
 }
 
@@ -145,7 +159,7 @@ html {
   padding: 5px;
 }
 .createAdmin button {
-  background-color: darkblue;
+  background-color: var(--button-blue);
   width: 100px;
   height: 40px;
   color: white;
@@ -155,7 +169,7 @@ html {
   margin: 0 auto;
 }
 .createAdmin button:hover {
-  background-color: rgb(27, 27, 175);
+  background-color: var(--button-blue-hover);
   cursor: pointer;
 }
 
@@ -183,7 +197,7 @@ html {
 }
 
 .adminList button {
-  background-color: #dc3545;
+  background-color: var(--button-red);
   color: #fff;
   border: 1px solid #ccc;
   padding: 5px 10px;
@@ -192,7 +206,7 @@ html {
 }
 
 .adminList button:hover {
-  background-color: #c82333;
+  background-color: var(--button-red-hover);
 }
 
 .adminList input[type="hidden"] {
@@ -225,16 +239,15 @@ html {
   width: 40%;
 }
 .modelContainer button {
-  background-color: darkblue;
+  background-color: var(--button-blue);
   width: 70px;
   height: 35px;
   color: white;
   border-radius: 10px;
-  border: 1px solid #ccc;
   display: block;
 }
 .modelContainer button:hover {
-  background-color: rgb(27, 27, 175);
+  background-color: var(--button-blue-hover);
   cursor: pointer;
 }
 .modelContainer .modelText {
@@ -266,3 +279,69 @@ html {
 }
 
 /*User reports management styles*/
+.table-container {
+  width: 80%;
+  margin: auto;
+  max-height: 30rem;
+  overflow-y: auto;
+}
+
+.user_reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.user_reports-table thead {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+}
+
+.user_reports-table thead tr,
+.user_reports-table tbody tr {
+  background-color: var(--background-secondary);
+  color: var(--text-color);
+  display: grid;
+  grid-template-columns:
+    50% minmax(min-content, 15%) minmax(min-content, 15%)
+    minmax(min-content, 10%) minmax(min-content, 10%);
+}
+.user_reports-table td,
+.user_reports-table th {
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.action-btns button {
+  width: 62px;
+  height: 28px;
+  border-radius: 5px;
+  color: var(--text-button);
+  text-align: center;
+  cursor: pointer;
+  margin: 5px auto;
+}
+
+.expand-btn {
+  background-color: var(--button-blue);
+}
+.expand-btn:hover {
+  background-color: var(--button-blue-hover);
+}
+
+.reject-btn {
+  background-color: var(--button-red);
+}
+.reject-btn:hover {
+  background-color: var(--button-red-hover);
+}
+.accept-btn {
+  background-color: var(--button-green);
+}
+.accept-btn:hover {
+  background-color: var(--button-green-hover);
+}
