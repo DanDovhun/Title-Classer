@@ -130,8 +130,12 @@ p {
   height: fit-content;
   min-width: 500px;
   padding: 20px;
-  background-color: #1c2026;
+  background-color: var(--background-main);
   border-radius: 5px;
+  text-align: center;
+}
+.report-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 50%);
 }
 
 .report-dialog h2 {

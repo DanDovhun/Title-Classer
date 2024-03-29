@@ -23,6 +23,7 @@
           {% else %} None {% endif %}
         </td>
         <td class="action-btns">
+          {% if report.reportComment %}
           <button
             class="expand-btn"
             type="button"
@@ -30,6 +31,7 @@
           >
             Expand
           </button>
+          {% endif %}
           <form action="{% url 'admin_reports' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="report_id" value="{{ report.id }}" />
@@ -53,35 +55,50 @@
 {% for report in user_reports %}
 <div>
   <dialog id="expand-report-{{ report.id }}" class="expand-report">
-    <span onclick="closeExpandReport('{{ report.id }}')">&times;</span>
     <label for="expandInput">Input: </label>
-    <textarea class="expandInput" name="expandInput" readonly>
+    <textarea rows="5" class="expandInput" name="expandInput" readonly>
 {{report.reportParagraph}}</textarea
     >
-
     <label for="expandModel">Model Prediction:</label>
     <input
+      type="text"
       class="expandModel"
       name="expandModel"
       value="{{ report.reportModelPrediction}}"
     />
-    <label for="expandUser">Model Prediction:</label>
+    <label for="expandUser">User Prediction:</label>
     <input
+      type="text"
       class="expandUser"
       name="expandUser"
       value="{{ report.reportUserPrediction}}"
     />
-    <label for="expandUrl">Link: </label>
-    <input
-      class="expandUrl"
-      name="expandUrl"
-      value="{{ report.reportURL}}"
-      readonly
-    />
+    {% if report.reportURL %}
+    <label for="expandUrl">Link:</label>
+    <div class="url-container">
+      <input
+        type="url"
+        class="expandUrl"
+        name="expandUrl"
+        value="{{ report.reportURL }}"
+        readonly
+      />
+      <button class="url-btn" onclick="openURL('{{ report.reportURL }}')">
+        Open
+      </button>
+    </div>
+    {% endif %}
     <label for="expandComment">Comment: </label>
-    <textarea class="expandComment" name="expandComment" readonly>
+    <textarea rows="5" class="expandComment" name="expandComment" readonly>
 {{ report.reportComment}}</textarea
     >
+    <button
+      type="button"
+      class="close-btn"
+      onclick="closeExpandReport('{{ report.id }}')"
+    >
+      Close
+    </button>
   </dialog>
 </div>
 {% endfor %}
@@ -94,6 +111,10 @@
   function closeExpandReport(reportId) {
     var dialog = document.getElementById("expand-report-" + reportId);
     dialog.close();
+  }
+
+  function openURL(siteURL) {
+    window.open(siteURL, "_blank");
   }
 </script>
 

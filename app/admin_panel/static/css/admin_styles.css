@@ -281,8 +281,10 @@ html {
 /*User reports management styles*/
 .table-container {
   width: 80%;
-  margin: auto;
+  min-height: max-content;
   max-height: 30rem;
+  margin: auto;
+  background-color: var(--background-secondary);
   overflow-y: auto;
 }
 
@@ -304,8 +306,8 @@ html {
   color: var(--text-color);
   display: grid;
   grid-template-columns:
-    50% minmax(min-content, 15%) minmax(min-content, 15%)
-    minmax(min-content, 10%) minmax(min-content, 10%);
+    50% minmax(100px, 15%) minmax(100px, 15%)
+    minmax(100px, 10%) minmax(100px, 10%);
 }
 .user_reports-table td,
 .user_reports-table th {
@@ -344,4 +346,75 @@ html {
 }
 .accept-btn:hover {
   background-color: var(--button-green-hover);
+}
+/** Expand reports dialog**/
+.expand-report {
+  width: 80%;
+  max-width: 600px;
+  height: 80%;
+  min-height: fit-content;
+  padding: 20px;
+  background-color: var(--background-main);
+  border-radius: 5px;
+  text-align: center;
+}
+.expand-report::backdrop {
+  background-color: rgba(0, 0, 0, 50%);
+}
+
+.expand-report label {
+  display: block;
+  font-weight: bold;
+  color: var(--text-color);
+  text-align: left;
+  margin: 10px 0px;
+  width: 100%;
+}
+
+.expand-report input[type="url"],
+.expand-report input[type="text"],
+.expand-report textarea {
+  width: 100%;
+  padding: 8px;
+  background-color: var(--background-form);
+  color: var(--text-color);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.url-container {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.expandUrl {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.url-btn {
+  padding: 6px 10px;
+  background-color: var(--button-blue);
+  color: var(--text-button);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.url-btn:hover {
+  background-color: var(--button-blue-hover);
+}
+
+.close-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--button-blue);
+  color: var(--text-button);
+  margin-top: 5px;
+}
+.close-btn:hover {
+  background-color: var(--button-blue-hover);
 }
