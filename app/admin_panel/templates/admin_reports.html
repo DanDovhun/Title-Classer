@@ -1,7 +1,7 @@
 {% extends 'admin_dashboard.html' %} {% block content %}
-<div>
-  <h2>User Reports</h2>
-  <table>
+<h2>User Reports</h2>
+<div class="table-container">
+  <table class="user_reports-table">
     <thead>
       <tr>
         <th>Input</th>
@@ -18,28 +18,32 @@
         <td>{{report.reportModelPrediction}}</td>
         <td>{{report.reportUserPrediction}}</td>
         <td>
-          <a href="{{ report.reportURL}}" target="_blank">Link</a>
+          {% if report.reportURL %}
+          <a href="{{ report.reportURL }}" target="_blank">Link</a>
+          {% else %} None {% endif %}
         </td>
         <td class="action-btns">
+          {% if report.reportComment %}
+          <button
+            class="expand-btn"
+            type="button"
+            onclick="openExpandReport('{{ report.id }}')"
+          >
+            Expand
+          </button>
+          {% endif %}
           <form action="{% url 'admin_reports' %}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="report_id" value="{{report.id}}" />
-            <button class="expand" type="submit" name="expand_report">
-              Expand
-            </button>
-          </form>
-          <form action="{% url 'admin_reports' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="report_id" value="{{report.id}}" />
-            <button class="reject-btn" type="submit" name="reject_report">
-              Reject
-            </button>
-          </form>
-          <form action="{% url 'admin_reports' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="report_id" value="{{report.id}}" />
+            <input type="hidden" name="report_id" value="{{ report.id }}" />
             <button class="accept-btn" type="submit" name="accept_report">
               Accept
+            </button>
+          </form>
+          <form action="{% url 'admin_reports' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="report_id" value="{{ report.id }}" />
+            <button class="reject-btn" type="submit" name="reject_report">
+              Reject
             </button>
           </form>
         </td>
@@ -47,6 +51,71 @@
       {% endfor %}
     </tbody>
   </table>
-
-  {% endblock %}
 </div>
+{% for report in user_reports %}
+<div>
+  <dialog id="expand-report-{{ report.id }}" class="expand-report">
+    <label for="expandInput">Input: </label>
+    <textarea rows="5" class="expandInput" name="expandInput" readonly>
+{{report.reportParagraph}}</textarea
+    >
+    <label for="expandModel">Model Prediction:</label>
+    <input
+      type="text"
+      class="expandModel"
+      name="expandModel"
+      value="{{ report.reportModelPrediction}}"
+    />
+    <label for="expandUser">User Prediction:</label>
+    <input
+      type="text"
+      class="expandUser"
+      name="expandUser"
+      value="{{ report.reportUserPrediction}}"
+    />
+    {% if report.reportURL %}
+    <label for="expandUrl">Link:</label>
+    <div class="url-container">
+      <input
+        type="url"
+        class="expandUrl"
+        name="expandUrl"
+        value="{{ report.reportURL }}"
+        readonly
+      />
+      <button class="url-btn" onclick="openURL('{{ report.reportURL }}')">
+        Open
+      </button>
+    </div>
+    {% endif %}
+    <label for="expandComment">Comment: </label>
+    <textarea rows="5" class="expandComment" name="expandComment" readonly>
+{{ report.reportComment}}</textarea
+    >
+    <button
+      type="button"
+      class="close-btn"
+      onclick="closeExpandReport('{{ report.id }}')"
+    >
+      Close
+    </button>
+  </dialog>
+</div>
+{% endfor %}
+<script>
+  function openExpandReport(reportId) {
+    var dialog = document.getElementById("expand-report-" + reportId);
+    dialog.showModal();
+  }
+
+  function closeExpandReport(reportId) {
+    var dialog = document.getElementById("expand-report-" + reportId);
+    dialog.close();
+  }
+
+  function openURL(siteURL) {
+    window.open(siteURL, "_blank");
+  }
+</script>
+
+{% endblock %}

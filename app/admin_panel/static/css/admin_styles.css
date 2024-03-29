@@ -1,3 +1,17 @@
+:root {
+  --background-main: #1c2026;
+  --background-secondary: #222831;
+  --background-form: #31363f;
+  --text-color: #ccc;
+  --text-button: #fff;
+  --button-blue: #0275d8;
+  --button-blue-hover: #05559b;
+  --button-green: #28a745;
+  --button-green-hover: #218838;
+  --button-red: #dc3545;
+  --button-red-hover: #b4303e;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: #1c2026;
@@ -89,7 +103,7 @@ html {
 }
 
 .loginAdmin button {
-  background-color: darkblue;
+  background-color: var(--button-blue);
   width: 100px;
   height: 40px;
   color: white;
@@ -100,7 +114,7 @@ html {
 }
 
 .loginAdmin button:hover {
-  background-color: rgb(27, 27, 175);
+  background-color: var(--button-blue-hover);
   cursor: pointer;
 }
 
@@ -145,7 +159,7 @@ html {
   padding: 5px;
 }
 .createAdmin button {
-  background-color: darkblue;
+  background-color: var(--button-blue);
   width: 100px;
   height: 40px;
   color: white;
@@ -155,7 +169,7 @@ html {
   margin: 0 auto;
 }
 .createAdmin button:hover {
-  background-color: rgb(27, 27, 175);
+  background-color: var(--button-blue-hover);
   cursor: pointer;
 }
 
@@ -183,7 +197,7 @@ html {
 }
 
 .adminList button {
-  background-color: #dc3545;
+  background-color: var(--button-red);
   color: #fff;
   border: 1px solid #ccc;
   padding: 5px 10px;
@@ -192,7 +206,7 @@ html {
 }
 
 .adminList button:hover {
-  background-color: #c82333;
+  background-color: var(--button-red-hover);
 }
 
 .adminList input[type="hidden"] {
@@ -225,16 +239,15 @@ html {
   width: 40%;
 }
 .modelContainer button {
-  background-color: darkblue;
+  background-color: var(--button-blue);
   width: 70px;
   height: 35px;
   color: white;
   border-radius: 10px;
-  border: 1px solid #ccc;
   display: block;
 }
 .modelContainer button:hover {
-  background-color: rgb(27, 27, 175);
+  background-color: var(--button-blue-hover);
   cursor: pointer;
 }
 .modelContainer .modelText {
@@ -266,3 +279,142 @@ html {
 }
 
 /*User reports management styles*/
+.table-container {
+  width: 80%;
+  min-height: max-content;
+  max-height: 30rem;
+  margin: auto;
+  background-color: var(--background-secondary);
+  overflow-y: auto;
+}
+
+.user_reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.user_reports-table thead {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+}
+
+.user_reports-table thead tr,
+.user_reports-table tbody tr {
+  background-color: var(--background-secondary);
+  color: var(--text-color);
+  display: grid;
+  grid-template-columns:
+    50% minmax(100px, 15%) minmax(100px, 15%)
+    minmax(100px, 10%) minmax(100px, 10%);
+}
+.user_reports-table td,
+.user_reports-table th {
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.action-btns button {
+  width: 62px;
+  height: 28px;
+  border-radius: 5px;
+  color: var(--text-button);
+  text-align: center;
+  cursor: pointer;
+  margin: 5px auto;
+}
+
+.expand-btn {
+  background-color: var(--button-blue);
+}
+.expand-btn:hover {
+  background-color: var(--button-blue-hover);
+}
+
+.reject-btn {
+  background-color: var(--button-red);
+}
+.reject-btn:hover {
+  background-color: var(--button-red-hover);
+}
+.accept-btn {
+  background-color: var(--button-green);
+}
+.accept-btn:hover {
+  background-color: var(--button-green-hover);
+}
+/** Expand reports dialog**/
+.expand-report {
+  width: 80%;
+  max-width: 600px;
+  height: 80%;
+  min-height: fit-content;
+  padding: 20px;
+  background-color: var(--background-main);
+  border-radius: 5px;
+  text-align: center;
+}
+.expand-report::backdrop {
+  background-color: rgba(0, 0, 0, 50%);
+}
+
+.expand-report label {
+  display: block;
+  font-weight: bold;
+  color: var(--text-color);
+  text-align: left;
+  margin: 10px 0px;
+  width: 100%;
+}
+
+.expand-report input[type="url"],
+.expand-report input[type="text"],
+.expand-report textarea {
+  width: 100%;
+  padding: 8px;
+  background-color: var(--background-form);
+  color: var(--text-color);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.url-container {
+  height: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.expandUrl {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.url-btn {
+  padding: 6px 10px;
+  background-color: var(--button-blue);
+  color: var(--text-button);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.url-btn:hover {
+  background-color: var(--button-blue-hover);
+}
+
+.close-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--button-blue);
+  color: var(--text-button);
+  margin-top: 5px;
+}
+.close-btn:hover {
+  background-color: var(--button-blue-hover);
+}
