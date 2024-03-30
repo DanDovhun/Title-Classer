@@ -36,13 +36,5 @@ RUN pip install dj-database-url
 # copy project
 COPY . .
 
-# collect static files
-RUN python manage.py collectstatic --noinput
-
-# add and run as non-root user
-RUN adduser --disabled-password user
-
-RUN chown user:user /app/db.sqlite3
-RUN chmod 755 /app/db.sqlite3
-
-USER user
+# run gunicorn
+CMD gunicorn --bind 0.0.0.0:$PORT app.wsgi:application
