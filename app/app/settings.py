@@ -8,12 +8,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "key"
+SECRET_KEY = "@ztazbm$mmfg8qun6b0wbj%om#_!p7qt=q9*ck2n608czr=fy2"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ["https://title-classer-43bc9ae7d642.herokuapp.com"]
 
 LOGIN_URL = '/login' #This is here so that the app redirects when Admin pages are accessed without login
 # Application definition

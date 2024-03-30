@@ -9,6 +9,429 @@
       type="text/css"
       href="{% static 'css/admin_styles.css' %}"
     />
+
+    <style>
+        :root {
+          --background-main: #1c2026;
+          --background-secondary: #222831;
+          --background-form: #31363f;
+          --text-color: #ccc;
+          --text-button: #fff;
+          --button-blue: #0275d8;
+          --button-blue-hover: #05559b;
+          --button-green: #28a745;
+          --button-green-hover: #218838;
+          --button-red: #dc3545;
+          --button-red-hover: #b4303e;
+        }
+        
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #1c2026;
+          color: #fff;
+          margin: 0;
+          padding: 0;
+        }
+        h2 {
+          text-align: center;
+        }
+        
+        body,
+        html {
+          margin: 0;
+          padding: 0;
+        }
+        
+        /* Navbar styles */
+        .admin-navbar {
+          background-color: #3e5d5e;
+        }
+        .admin-navbar h1 {
+          background-color: #273a3b;
+          padding: 0;
+          margin: 0;
+          text-align: center;
+        }
+        
+        .admin-navbar ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+        }
+        
+        .admin-navbar ul li {
+          display: inline-block;
+          margin: 0;
+        }
+        
+        .admin-navbar ul li:last-child {
+          float: right;
+        }
+        
+        .admin-navbar ul li a {
+          text-decoration: none;
+          color: #fff;
+          font-size: 20px;
+          padding: 10px 10px;
+          display: inline-block;
+        }
+        
+        .admin-navbar ul li:hover a {
+          background-color: #4f7677;
+          border-radius: 5px;
+        }
+        
+        .admin-navbar ul li a:hover {
+          text-decoration: underline;
+        }
+        
+        /* Login Styles*/
+        .loginAdmin {
+          background-color: #222831;
+          width: 50%;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 20px;
+          margin: 100px auto;
+          box-sizing: border-box;
+          display: block;
+          text-align: center;
+        }
+        .loginAdmin form {
+          display: inline-block;
+          text-align: left;
+        }
+        
+        .loginAdmin input {
+          background-color: #31363f;
+          color: rgb(225, 225, 225);
+          display: block;
+          margin: 20px 0px;
+          height: 30px;
+          width: 30vw;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          padding: 5px;
+        }
+        
+        .loginAdmin button {
+          background-color: var(--button-blue);
+          width: 100px;
+          height: 40px;
+          color: white;
+          border-radius: 10px;
+          border: 1px solid #ccc;
+          display: block;
+          margin: 20px auto;
+        }
+        
+        .loginAdmin button:hover {
+          background-color: var(--button-blue-hover);
+          cursor: pointer;
+        }
+        
+        .loginError {
+          color: red;
+        }
+        /*Admin management styles*/
+        .admin-content .container {
+          display: flex;
+          justify-content: center;
+        }
+        
+        .createAdmin,
+        .adminList {
+          background-color: #222831;
+          height: 70vh;
+          width: 48%;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 20px;
+          margin: auto;
+          box-sizing: border-box;
+          vertical-align: top;
+          justify-content: center;
+          text-align: center;
+        }
+        
+        .createAdmin form {
+          display: inline-block;
+          text-align: left;
+        }
+        .admin-content input {
+          background-color: #31363f;
+          color: rgb(225, 225, 225);
+          display: block;
+          margin: 20px 0px;
+          height: 30px;
+          width: 30vw;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          padding: 5px;
+        }
+        .createAdmin button {
+          background-color: var(--button-blue);
+          width: 100px;
+          height: 40px;
+          color: white;
+          border-radius: 10px;
+          border: 1px solid #ccc;
+          display: block;
+          margin: 0 auto;
+        }
+        .createAdmin button:hover {
+          background-color: var(--button-blue-hover);
+          cursor: pointer;
+        }
+        
+        .adminList {
+          display: inline-block;
+        }
+        .adminList h4 {
+          text-align: center;
+        }
+        .adminList ul {
+          width: 80%;
+          list-style-type: none;
+          display: block;
+          overflow: auto;
+          max-height: 88%;
+        }
+        .adminList li {
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: none;
+        }
+        
+        .adminList button {
+          background-color: var(--button-red);
+          color: #fff;
+          border: 1px solid #ccc;
+          padding: 5px 10px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        .adminList button:hover {
+          background-color: var(--button-red-hover);
+        }
+        
+        .adminList input[type="hidden"] {
+          display: none;
+        }
+        
+        /* Model management styles*/
+        
+        .modelContainer ul {
+          margin: 0 auto;
+          list-style-type: none;
+          padding: 0;
+          width: 100%;
+          border-collapse: collapse;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        
+        .modelContainer li {
+          background-color: #222831;
+          width: 60%;
+          border: solid 1px #ccc;
+          display: flex;
+          justify-content: space-between;
+        }
+        
+        .modelContainer ul li div {
+          padding: 20px;
+          width: 40%;
+        }
+        .modelContainer button {
+          background-color: var(--button-blue);
+          width: 70px;
+          height: 35px;
+          color: white;
+          border-radius: 10px;
+          display: block;
+        }
+        .modelContainer button:hover {
+          background-color: var(--button-blue-hover);
+          cursor: pointer;
+        }
+        .modelContainer .modelText {
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          background-color: #31363f;
+          padding: 10px;
+        }
+        .modelContainer textarea {
+          width: 100%;
+          height: 50px;
+          border: 1px solid #ccc;
+          background-color: #31363f;
+          color: white;
+        }
+        .modelContainer select {
+          margin: 15px 0;
+          height: 25px;
+          border: 1px solid #ccc;
+          background-color: #31363f;
+          color: white;
+        }
+        
+        .conf_mat {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 85%;
+        }
+        
+        /*User reports management styles*/
+        .table-container {
+          width: 80%;
+          min-height: max-content;
+          max-height: 30rem;
+          margin: auto;
+          background-color: var(--background-secondary);
+          overflow-y: auto;
+        }
+        
+        .user_reports-table {
+          width: 100%;
+          border-collapse: collapse;
+          table-layout: fixed;
+        }
+        
+        .user_reports-table thead {
+          position: sticky;
+          top: 0px;
+          z-index: 1;
+        }
+        
+        .user_reports-table thead tr,
+        .user_reports-table tbody tr {
+          background-color: var(--background-secondary);
+          color: var(--text-color);
+          display: grid;
+          grid-template-columns:
+            50% minmax(100px, 15%) minmax(100px, 15%)
+            minmax(100px, 10%) minmax(100px, 10%);
+        }
+        .user_reports-table td,
+        .user_reports-table th {
+          padding: 10px;
+          border: 1px solid #ccc;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .action-btns button {
+          width: 62px;
+          height: 28px;
+          border-radius: 5px;
+          color: var(--text-button);
+          text-align: center;
+          cursor: pointer;
+          margin: 5px auto;
+        }
+        
+        .expand-btn {
+          background-color: var(--button-blue);
+        }
+        .expand-btn:hover {
+          background-color: var(--button-blue-hover);
+        }
+        
+        .reject-btn {
+          background-color: var(--button-red);
+        }
+        .reject-btn:hover {
+          background-color: var(--button-red-hover);
+        }
+        .accept-btn {
+          background-color: var(--button-green);
+        }
+        .accept-btn:hover {
+          background-color: var(--button-green-hover);
+        }
+        /** Expand reports dialog**/
+        .expand-report {
+          width: 80%;
+          max-width: 600px;
+          height: 80%;
+          min-height: fit-content;
+          padding: 20px;
+          background-color: var(--background-main);
+          border-radius: 5px;
+          text-align: center;
+        }
+        .expand-report::backdrop {
+          background-color: rgba(0, 0, 0, 50%);
+        }
+        
+        .expand-report label {
+          display: block;
+          font-weight: bold;
+          color: var(--text-color);
+          text-align: left;
+          margin: 10px 0px;
+          width: 100%;
+        }
+        
+        .expand-report input[type="url"],
+        .expand-report input[type="text"],
+        .expand-report textarea {
+          width: 100%;
+          padding: 8px;
+          background-color: var(--background-form);
+          color: var(--text-color);
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-sizing: border-box;
+        }
+        .url-container {
+          height: fit-content;
+          display: flex;
+          align-items: center;
+        }
+        
+        .expandUrl {
+          flex: 1;
+          margin-right: 10px;
+        }
+        
+        .url-btn {
+          padding: 6px 10px;
+          background-color: var(--button-blue);
+          color: var(--text-button);
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        
+        .url-btn:hover {
+          background-color: var(--button-blue-hover);
+        }
+        
+        .close-btn {
+          padding: 8px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          background-color: var(--button-blue);
+          color: var(--text-button);
+          margin-top: 5px;
+        }
+        .close-btn:hover {
+          background-color: var(--button-blue-hover);
+        }
+      </style>   
   </head>
   <body>
     <div class="loginAdmin">

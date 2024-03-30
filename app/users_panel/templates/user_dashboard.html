@@ -11,6 +11,213 @@
       type="text/css"
       href="{% static 'css/user_styles.css' %}"
     />
+    <style>
+      :root {
+        --background-main: #1c2026;
+        --background-form: #31363f;
+        --text-color: #ccc;
+        --text-button: #fff;
+        --button-blue: #0275d8;
+        --button-blue-hover: #05559b;
+        --button-green: #28a745;
+        --button-green-hover: #218838;
+        --button-red: #dc3545;
+        --button-red-hover: #b4303e;
+      }
+      
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--background-main);
+        color: var(--text-color);
+      }
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+      
+      h2,
+      p {
+        text-align: center;
+      }
+      
+      /*Dashboard styles*/
+      
+      .container {
+        background-color: none;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .search-container {
+        background-color: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 50vh;
+        overflow: none;
+      }
+      
+      .search-input {
+        background-color: var(--background-form);
+        color: var(--text-color);
+        width: 60vw;
+        height: 200px;
+        font-size: 20px;
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+      }
+      
+      .search-button {
+        width: 120px;
+        height: 50px;
+        background-color: var(--button-green);
+        padding: 8px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+      }
+      
+      .search-button:hover {
+        background-color: var(--button-green-hover);
+      }
+      
+      /* User Prediction styles*/
+      
+      .prediction-input {
+        background-color: var(--background-form);
+        color: var(--text-color);
+        width: 60vw;
+        height: 200px;
+        font-size: 20px;
+        padding: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        outline: none;
+      }
+      .prediction-input-label {
+        width: 100%;
+        padding: 5px;
+        margin: auto;
+      }
+      
+      .container-btn {
+        display: flex;
+      }
+      
+      .newPrediction-btn,
+      .reportPrediction-btn {
+        padding: 8px 20px;
+        margin-right: 10px;
+        width: min-content;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+      }
+      .newPrediction-btn {
+        background-color: var(--button-green);
+      }
+      .newPrediction-btn:hover {
+        background-color: var(--button-green-hover);
+      }
+      .reportPrediction-btn {
+        background-color: var(--button-blue);
+      }
+      .reportPrediction-btn:hover {
+        background-color: var(--button-blue-hover);
+      }
+      
+      /** User Report Dialog**/
+      .report-dialog {
+        width: fit-content;
+        height: fit-content;
+        min-width: 500px;
+        padding: 20px;
+        background-color: var(--background-main);
+        border-radius: 5px;
+        text-align: center;
+      }
+      .report-dialog::backdrop {
+        background-color: rgba(0, 0, 0, 50%);
+      }
+      
+      .report-dialog h2 {
+        margin-top: 0;
+        color: var(--text-color);
+      }
+      
+      .report-form {
+        margin-bottom: 20px;
+      }
+      
+      .report-dialog label {
+        display: block;
+        font-weight: bold;
+        color: var(--text-color);
+        text-align: left;
+      }
+      
+      .report-dialog input,
+      .report-dialog textarea,
+      .report-dialog select {
+        width: 100%;
+        padding: 8px;
+        background-color: var(--background-form);
+        color: var(--text-color);
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      
+      .cancelReport-btn,
+      .submitReport-btn {
+        padding: 8px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+      }
+      
+      .cancelReport-btn {
+        background-color: #dc3545;
+      }
+      
+      .cancelReport-btn:hover {
+        background-color: var(--button-red-hover);
+      }
+      .submitReport-btn {
+        background-color: #28a745;
+      }
+      .submitReport-btn:hover {
+        background-color: var(--button-green-hover);
+      }
+      
+      /*Navbar styles*/
+      
+      .user-navbar {
+        background-color: #3e5d5e;
+        padding: 10px;
+        margin: 0;
+        height: 30px;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+      }
+    </style>      
   </head>
   <body>
     {% include 'user_navbar.html' %}
