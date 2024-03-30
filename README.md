@@ -37,28 +37,19 @@ Assuming you already have docker installed on your machine, you can just follow 
 docker build -t title_classer .
 ```
 
-or you can just pull from docker:
-
-```
-docker pull dandovhun/title_classer
-```
-
 ##### 2.) Run:
 ```
-docker run -it -p 8000:8000 title_classer
+docker run -it -p 8000:8000 title_classer:latest
 ```
 
 #### b.) Outside of Docker:
 ##### 1.) Get packages:
-###### Get spaCy and en_core_web_sm:
+###### Get packages that had issues being in requirements.txt:
 ```
 pip install -U pip setuptools wheel
 pip install -U spacy
-python -m spacy download en_core_web_sm
-```
-
-###### Seaborn:
-```
+python -m spacy download en_core_web_sm 
+python -m pip install tensorflow
 pip install seaborn
 ```
 
@@ -71,6 +62,36 @@ pip install --no-cache-dir -r requirements.txt
 ```
 python manage.py runserver
 ```
+
+## Deployment on Heroku:
+### Deployment:
+Address: https://title-classer-43bc9ae7d642.herokuapp.com/
+### Login to Heroku:
+```
+heroku login
+```
+
+### Login to Heroku's Container Registry:
+```
+heroku container:login
+```
+
+### Create app:
+_We already took this name and the name won't work for anyone else if they try running this command verbatim. This is only to demonstrate how the application was created in Heroku_
+```
+heroku apps:create title-classer
+```
+
+### Build, push and deploy Docker container:
+```
+// Build and push the container
+heroku container:push -a title-classer web
+
+// Deploy the container
+heroku container:release -a title-classer web
+```
+
+When the container is deployed the app will restart will take about 60 seconds to be running again.
 
 ## Tools and Technologies:
 * Website:
