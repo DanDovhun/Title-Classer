@@ -14,6 +14,7 @@ SECRET_KEY = "@ztazbm$mmfg8qun6b0wbj%om#_!p7qt=q9*ck2n608czr=fy2"
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ["https://title-classer-43bc9ae7d642.herokuapp.com"]
 
 LOGIN_URL = '/login' #This is here so that the app redirects when Admin pages are accessed without login
 # Application definition
