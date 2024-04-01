@@ -53,13 +53,40 @@ def user_dashboard(request):
 
 
 def user_prediction(request):
+    error = False
     if request.method == "POST":
         report_form = ReportForm(request.POST)
         if report_form.is_valid():
-            report = report_form.save()
-            return redirect("user_prediction")
+            model_prediction = report_form.cleaned_data["reportModelPrediction"]
+            user_prediction = report_form.cleaned_data["reportUserPrediction"]
+
+            if model_prediction == user_prediction:
+                print("model and user prediction are the same")
+                error_message = (
+                    "Your prediction can't be the same as the model prediction"
+                )
+                error = True
+                return render(
+                    request,
+                    "user_prediction.html",
+                    {
+                        "report_form": report_form,
+                        "error_message": error_message,
+                        "error": error,
+                    },
+                )
+            else:
+
+                report = report_form.save()
+                return redirect("user_prediction")
         else:
-            return render(request, "user_prediction.html", {"report_form": report_form})
+            # Form is invalid, handle URL validation errors
+            error = True
+            return render(
+                request,
+                "user_prediction.html",
+                {"report_form": report_form, "error": error},
+            )
     else:
         search_input = request.session.get("search_input", "")
         category = request.session.get("category", "")

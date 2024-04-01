@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from urllib.parse import urlparse
 from .models import UserReport
 
 
@@ -24,6 +26,14 @@ class ReportForm(forms.ModelForm):
         self.initial["reportModelPrediction"] = kwargs.get("initial", {}).get(
             "reportModelPrediction", ""
         )
+
+    def clean_reportURL(self):
+        report_url = self.cleaned_data["reportURL"]
+        if report_url:
+            parsed_url = urlparse(report_url)
+            if not (parsed_url.scheme and parsed_url.netloc):
+                raise ValidationError("Please enter a valid URL.")
+        return report_url
 
     class Meta:
         model = UserReport
