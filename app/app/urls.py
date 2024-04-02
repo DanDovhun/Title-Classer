@@ -12,5 +12,6 @@ urlpatterns = [
     path("admin/admins/", adminViews.admin_admins, name="admin_admins"),
     path("logout/", adminViews.admin_logout, name="admin_logout"),
     path("retrain/", adminViews.retrain),
+    path("revert/", adminViews.revert, name="revert"),
     path("test/", admin.site.urls),
 ]
