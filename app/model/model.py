@@ -5,6 +5,7 @@ import spacy
 import joblib
 import sqlite3
 import datetime
+import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -23,21 +24,18 @@ nlp = spacy.load("en_core_web_sm")
 
 # May not be used directly in training, but is used to preprocessed raw data
 # when transfering them from the csv file to the database
-def preprocess_text(txt):
-    txt = re.sub("[^a-zA-Z]", " ", txt)
-    txt = txt.lower()
+def preprocess(txt):
+    txt = re.sub("[^a-zA-Z0-9]", " ", txt)
     txt = " ".join(txt.split())
+
+    arr = []
 
     doc = nlp(txt)
 
-    tokens_filtered = []
-    # Iterate through tokens and append to list if its not stop word or punctuation mark
-    for token in doc:
-        if token.is_stop or token.is_punct:
-            continue
-        tokens_filtered.append(token.lemma_)
+    for item in doc:
+        arr.append(item.lemma_)
 
-    return " ".join(tokens_filtered)
+    return " ".join(arr)
 
 
 def train(save):
@@ -60,22 +58,12 @@ def train(save):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
 
-    training_alg = {"model": LogisticRegression(multi_class="ovr", C=2)}
+    model = LogisticRegression(multi_class="ovr", C=2)
 
-    try:
-        training_alg["model"].fit(
-            X_train,
-            y_train,
-            early_stopping_rounds=10,
-            eval_metric="merror",
-            eval_set=[(X_test, y_test)],
-        )
+    model.fit(X_train, y_train)
 
-    except TypeError:
-        training_alg["model"].fit(X_train, y_train)
-
-    preds = training_alg["model"].predict(X_test)
-    score = training_alg["model"].score(X_test, y_test)
+    preds = model.predict(X_test)
+    score = model.score(X_test, y_test)
     conf_mat = confusion_matrix(y_test, preds)
 
     recall = recall_score(y_test, preds, average="weighted")
@@ -84,7 +72,15 @@ def train(save):
     f_one = f1_score(y_test, preds, average="weighted")
 
     if save:
-        joblib.dump(training_alg["model"], "model/saved_model/model.joblib")
+        os.rename(
+            "model/saved_model/model.joblib", "model/saved_model/old_model.joblib"
+        )
+        os.rename(
+            "model/saved_model/vectorizer.joblib",
+            "model/saved_model/old_vectorizer.joblib",
+        )
+
+        joblib.dump(model, "model/saved_model/model.joblib")
         joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
 
     training_time = datetime.datetime.now() - start
@@ -98,7 +94,7 @@ def add_report(text, label):
     con = sqlite3.connect("model/data/dataset.db")
     cur = con.cursor()
 
-    prepped = preprocess_text(text)
+    prepped = preprocess(text)
 
     cur.execute("INSERT INTO Dataset VALUES(?, ?, ?)", (text, prepped, label))
     con.commit()
@@ -111,12 +107,12 @@ def csv_to_sql():
     cur = con.cursor()
 
     # Load data
-    df = pd.read_csv("data/df_file.csv")
+    df = pd.read_csv("model/data/df_file.csv")
     df["Text"] = df["Text"].apply(lambda x: x.replace("\n", ""))
 
     df.drop_duplicates(ignore_index=True, inplace=True)
 
-    df["prep_text"] = df["Text"].apply(preprocess_text)
+    df["prep_text"] = df["Text"].apply(preprocess)
     print("Preprocessing done")
 
     cur.execute(
@@ -158,7 +154,7 @@ def second_greatest(arr):
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
     vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
-    text = preprocess_text(text)
+    text = preprocess(text)
 
     reshaped = np.array([text])
     transformed = vectorizer.transform(reshaped)
