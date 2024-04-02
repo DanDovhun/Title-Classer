@@ -43,6 +43,14 @@ docker run -it -p 8000:8000 title_classer:latest
 ```
 
 #### b.) Outside of Docker:
+##### 0.) Create Conda environment
+```
+// Create venv
+conda create -n title-classer
+
+// Activate
+conda activate title-classer
+```
 ##### 1.) Get packages:
 ###### Get packages that had issues being in requirements.txt:
 ```
