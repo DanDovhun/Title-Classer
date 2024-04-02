@@ -20,8 +20,17 @@ def preprocessing(txt):
     # Remove all non
     txt = re.sub('[^a-zA-Z0-9]', ' ', txt) 
     txt = " ".join(txt.split()) 
+
+    arr = []
     
-    return nlp(txt)
+    doc = nlp(txt)
+
+    print(type(doc))
+    
+    for item in doc:
+        arr.append(item.lemma_)
+
+    return " ".join(arr)
 
 def train(save):
     print("Loading data...")
