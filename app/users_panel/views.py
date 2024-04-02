@@ -39,14 +39,6 @@ def user_dashboard(request):
             request.session["second_exists"] = possibly_other
 
             return redirect("user_prediction")
-
-        """return redirect(request, 'user_dashboard.html', {
-            'search_input': search_input,
-            "category": category,
-            "second": second_likely,
-            "prob": round(second_prob*100, 2),
-            "second_exists": possibly_other,
-        })"""
     else:
         article_form = ArticleForm()
         return render(request, "user_dashboard.html", {"form": article_form})
@@ -80,7 +72,6 @@ def user_prediction(request):
                 report = report_form.save()
                 return redirect("user_prediction")
         else:
-            # Form is invalid, handle URL validation errors
             error = True
             return render(
                 request,
@@ -90,6 +81,9 @@ def user_prediction(request):
     else:
         search_input = request.session.get("search_input", "")
         category = request.session.get("category", "")
+        second = request.session.get("second")
+        prob = request.session.get("prob")
+        second_exists = request.session.get("second_exists")
         report_form = ReportForm(
             initial={
                 "reportParagraph": search_input,
@@ -102,6 +96,9 @@ def user_prediction(request):
             {
                 "search_input": search_input,
                 "category": category,
+                "second": second,
+                "prob": prob,
+                "second_exists": second_exists,
                 "report_form": report_form,
             },
         )
