@@ -431,20 +431,52 @@
       .close-btn:hover {
         background-color: var(--button-blue-hover);
       }
+
+      /*Error styles*/
+      .admin-error{
+        visibility: hidden;
+        min-width: 250px;
+        background-color: var(--background-form);
+        color: var(--text-color);
+        text-align: center;
+        border: solid 2px;
+        border-radius: 5px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        right: 10px;
+        bottom: 30px;
+      }
+      .admin-error.show{
+        visibility: visible;
+      }
+      .admin-error.success{
+        border-color: var(--button-green-hover);
+      }
+      .admin-error.error{
+        border-color:  var(--button-red-hover);
+      }
     </style>      
   </head>
-  <body>
+  <body>  
     {% include 'admin_navbar.html' %}
 
     <div class="content">{% block content %}{% endblock %}</div>
-
+    {% if messages %}
+      {% for message in messages %}
+        <div class="admin-error {% if message.tags %}{{ message.tags }}{% endif %}">
+          {{message}}
+        </div>
+      {% endfor %}
+    {% endif %}
     <script>
-      function showAdminSection(sectionId) {
-        document.querySelectorAll(".admin-section").forEach((section) => {
-          section.style.display = "none";
-        });
-        document.getElementById(sectionId).style.display = "block";
-      }
+      var errors = document.querySelectorAll(".admin-error")
+      errors.forEach(function(error){
+        error.classList.add("show");
+        setTimeout(function(){
+          error.classList.remove("show");
+        }, 10000);
+      });
     </script>
   </body>
 </html>

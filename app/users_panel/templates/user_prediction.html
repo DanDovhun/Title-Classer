@@ -25,7 +25,7 @@
         --button-red: #dc3545;
         --button-red-hover: #b4303e;
       }
-      
+
       body {
         font-family: Arial, sans-serif;
         background-color: var(--background-main);
@@ -36,14 +36,14 @@
         margin: 0;
         padding: 0;
       }
-      
+
       h2,
       p {
         text-align: center;
       }
-      
+
       /*Dashboard styles*/
-      
+
       .container {
         background-color: none;
         max-width: 800px;
@@ -53,7 +53,7 @@
         flex-direction: column;
         align-items: center;
       }
-      
+
       .search-container {
         background-color: none;
         display: flex;
@@ -63,7 +63,7 @@
         height: 50vh;
         overflow: none;
       }
-      
+
       .search-input {
         background-color: var(--background-form);
         color: var(--text-color);
@@ -76,7 +76,7 @@
         border-radius: 5px;
         outline: none;
       }
-      
+
       .search-button {
         width: 120px;
         height: 50px;
@@ -88,13 +88,13 @@
         cursor: pointer;
         color: #fff;
       }
-      
+
       .search-button:hover {
         background-color: var(--button-green-hover);
       }
-      
+
       /* User Prediction styles*/
-      
+
       .prediction-input {
         background-color: var(--background-form);
         color: var(--text-color);
@@ -111,11 +111,11 @@
         padding: 5px;
         margin: auto;
       }
-      
+
       .container-btn {
         display: flex;
       }
-      
+
       .newPrediction-btn,
       .reportPrediction-btn {
         padding: 8px 20px;
@@ -138,7 +138,7 @@
       .reportPrediction-btn:hover {
         background-color: var(--button-blue-hover);
       }
-      
+
       /** User Report Dialog**/
       .report-dialog {
         width: fit-content;
@@ -152,23 +152,24 @@
       .report-dialog::backdrop {
         background-color: rgba(0, 0, 0, 50%);
       }
-      
+
       .report-dialog h2 {
         margin-top: 0;
         color: var(--text-color);
       }
-      
+
       .report-form {
         margin-bottom: 20px;
       }
-      
+
       .report-dialog label {
         display: block;
         font-weight: bold;
         color: var(--text-color);
         text-align: left;
+        margin: 15px 0px 10px 0px;
       }
-      
+
       .report-dialog input,
       .report-dialog textarea,
       .report-dialog select {
@@ -180,7 +181,7 @@
         border-radius: 5px;
         box-sizing: border-box;
       }
-      
+
       .cancelReport-btn,
       .submitReport-btn {
         padding: 8px 20px;
@@ -190,11 +191,11 @@
         cursor: pointer;
         color: #fff;
       }
-      
+
       .cancelReport-btn {
         background-color: #dc3545;
       }
-      
+
       .cancelReport-btn:hover {
         background-color: var(--button-red-hover);
       }
@@ -204,9 +205,15 @@
       .submitReport-btn:hover {
         background-color: var(--button-green-hover);
       }
-      
+      .error_message {
+        color: red;
+        text-align: left;
+        margin: 0;
+        padding: 0;
+      }
+
       /*Navbar styles*/
-      
+
       .user-navbar {
         background-color: #3e5d5e;
         padding: 10px;
@@ -218,7 +225,26 @@
         display: flex;
         justify-content: center;
       }
-    </style>    
+
+      /*Toast message styles*/
+      .toast-message {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: var(--background-form);
+        color: var(--text-color);
+        text-align: center;
+        border: solid 1px var(--button-green-hover);
+        border-radius: 5px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        right: 10px;
+        bottom: 30px;
+      }
+      .toast-message.show{
+        visibility: visible;
+      }
+    </style>
   </head>
   <body>
     {% include 'user_navbar.html' %}
@@ -245,7 +271,35 @@
       <dialog class="report-dialog">
         <h2>Report Prediction</h2>
         <form method="post" class="report-form">
-          {% csrf_token %} {{ report_form.as_p }}
+          {% csrf_token %}
+          <div>
+            {{report_form.reportParagraph.label_tag}}
+            {{report_form.reportParagraph}}
+          </div>
+          <div>
+            {{report_form.reportModelPrediction.label_tag }}
+            {{report_form.reportModelPrediction }}
+          </div>
+          <div>
+            {{ report_form.reportUserPrediction.label_tag}}
+            {{report_form.reportUserPrediction}} 
+            {% if error_message %}
+              <p class="error_message">{{error_message }}</p>
+            {% endif %}
+          </div>
+          <div>
+            {{ report_form.reportURL.label_tag }} {{ report_form.reportURL }}
+            {% if report_form.reportURL.errors %}
+                {% for error in report_form.reportURL.errors %}
+                    <p class="error_message">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+              
+          <div>
+            {{ report_form.reportComment.label_tag }}
+            {{report_form.reportComment }}
+          </div>
           <button
             type="button"
             class="cancelReport-btn"
@@ -259,6 +313,11 @@
         </form>
       </dialog>
     </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="toast-message"> {{ message }} </div>
+      {% endfor %}
+    {% endif %}
     <p>
       Are you an Admin for this website?
       <a href="{% url 'admin_model' %}">Login</a>
@@ -266,13 +325,28 @@
 
     <script>
       var reportDialog = document.querySelector(".report-dialog");
+      var error = "{{error}}"
+      var toasts = document.querySelectorAll(".toast-message")
       function openReportModal() {
-        reportDialog.showModal();
+          reportDialog.showModal();
+      }
+  
+      function closeReportModal() {
+          reportDialog.close();
       }
 
-      function closeReportModal() {
-        reportDialog.close();
+      if (error) {
+          openReportModal();
       }
-    </script>
+
+      toasts.forEach(function(toast) {
+
+      toast.classList.add("show");
+      setTimeout(function() {
+        toast.classList.remove("show");
+      }, 3000);
+  });
+  </script>
+  
   </body>
 </html>

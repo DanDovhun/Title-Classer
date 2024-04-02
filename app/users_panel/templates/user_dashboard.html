@@ -24,7 +24,7 @@
         --button-red: #dc3545;
         --button-red-hover: #b4303e;
       }
-      
+
       body {
         font-family: Arial, sans-serif;
         background-color: var(--background-main);
@@ -35,14 +35,14 @@
         margin: 0;
         padding: 0;
       }
-      
+
       h2,
       p {
         text-align: center;
       }
-      
+
       /*Dashboard styles*/
-      
+
       .container {
         background-color: none;
         max-width: 800px;
@@ -52,7 +52,7 @@
         flex-direction: column;
         align-items: center;
       }
-      
+
       .search-container {
         background-color: none;
         display: flex;
@@ -62,7 +62,7 @@
         height: 50vh;
         overflow: none;
       }
-      
+
       .search-input {
         background-color: var(--background-form);
         color: var(--text-color);
@@ -75,7 +75,7 @@
         border-radius: 5px;
         outline: none;
       }
-      
+
       .search-button {
         width: 120px;
         height: 50px;
@@ -87,13 +87,13 @@
         cursor: pointer;
         color: #fff;
       }
-      
+
       .search-button:hover {
         background-color: var(--button-green-hover);
       }
-      
+
       /* User Prediction styles*/
-      
+
       .prediction-input {
         background-color: var(--background-form);
         color: var(--text-color);
@@ -110,11 +110,11 @@
         padding: 5px;
         margin: auto;
       }
-      
+
       .container-btn {
         display: flex;
       }
-      
+
       .newPrediction-btn,
       .reportPrediction-btn {
         padding: 8px 20px;
@@ -137,7 +137,7 @@
       .reportPrediction-btn:hover {
         background-color: var(--button-blue-hover);
       }
-      
+
       /** User Report Dialog**/
       .report-dialog {
         width: fit-content;
@@ -151,23 +151,23 @@
       .report-dialog::backdrop {
         background-color: rgba(0, 0, 0, 50%);
       }
-      
+
       .report-dialog h2 {
         margin-top: 0;
         color: var(--text-color);
       }
-      
+
       .report-form {
         margin-bottom: 20px;
       }
-      
+
       .report-dialog label {
         display: block;
         font-weight: bold;
         color: var(--text-color);
         text-align: left;
       }
-      
+
       .report-dialog input,
       .report-dialog textarea,
       .report-dialog select {
@@ -179,7 +179,7 @@
         border-radius: 5px;
         box-sizing: border-box;
       }
-      
+
       .cancelReport-btn,
       .submitReport-btn {
         padding: 8px 20px;
@@ -189,11 +189,11 @@
         cursor: pointer;
         color: #fff;
       }
-      
+
       .cancelReport-btn {
         background-color: #dc3545;
       }
-      
+
       .cancelReport-btn:hover {
         background-color: var(--button-red-hover);
       }
@@ -203,9 +203,9 @@
       .submitReport-btn:hover {
         background-color: var(--button-green-hover);
       }
-      
+
       /*Navbar styles*/
-      
+
       .user-navbar {
         background-color: #3e5d5e;
         padding: 10px;
@@ -217,11 +217,11 @@
         display: flex;
         justify-content: center;
       }
-    </style>      
+    </style>
   </head>
   <body>
     {% include 'user_navbar.html' %}
-    <h2>Classify Articles based on their Title!</h2>
+    <h2>Classify your articles by entering a paragraph</h2>
     <div class="container">
       <form method="post">
         {% csrf_token %}
@@ -230,17 +230,6 @@
           <button type="submit" class="search-button">Classify</button>
         </div>
       </form>
-      {% if search_input %}
-      <h1>Class: {{category}}</h1>
-
-      {% if second_exists %}
-      <h3>Other possibility: {{second}} ({{prob}}%)</h3>
-      {% endif %}
-
-      <div id="search-results">
-        <h3 class="search-output">You searched for: {{ search_input }}</h3>
-      </div>
-      {% endif %}
     </div>
     <p>
       Are you an Admin for this website?

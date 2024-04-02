@@ -11,15 +11,22 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
-from sklearn.metrics import confusion_matrix, recall_score, precision_score, accuracy_score, f1_score
+from sklearn.metrics import (
+    confusion_matrix,
+    recall_score,
+    precision_score,
+    accuracy_score,
+    f1_score,
+)
 
 nlp = spacy.load("en_core_web_sm")
 
-# May not be used directly in training, but is used to preprocessed raw data 
+
+# May not be used directly in training, but is used to preprocessed raw data
 # when transfering them from the csv file to the database
 def preprocess(txt):
-    txt = re.sub('[^a-zA-Z0-9]', ' ', txt) 
-    txt = " ".join(txt.split()) 
+    txt = re.sub("[^a-zA-Z0-9]", " ", txt)
+    txt = " ".join(txt.split())
 
     arr = []
 
@@ -30,6 +37,7 @@ def preprocess(txt):
 
     return " ".join(arr)
 
+
 def train(save):
     print("Loading data...")
     con = sqlite3.connect("model/data/dataset.db")
@@ -37,8 +45,10 @@ def train(save):
     con.close()
 
     print("Vectorising...")
-    vectorizer = TfidfVectorizer(sublinear_tf=True, min_df=5,ngram_range=(1, 2), stop_words='english')
-    features = vectorizer.fit_transform(df['prep_text']).toarray()
+    vectorizer = TfidfVectorizer(
+        sublinear_tf=True, min_df=5, ngram_range=(1, 2), stop_words="english"
+    )
+    features = vectorizer.fit_transform(df["prep_text"]).toarray()
 
     print("Training...")
 
@@ -46,33 +56,39 @@ def train(save):
     X = features
     y = df["label"]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
 
-    model = LogisticRegression(multi_class='ovr', C=2)
+    model = LogisticRegression(multi_class="ovr", C=2)
 
     model.fit(X_train, y_train)
-        
+
     preds = model.predict(X_test)
     score = model.score(X_test, y_test)
     conf_mat = confusion_matrix(y_test, preds)
-    
+
     recall = recall_score(y_test, preds, average="weighted")
     prec = precision_score(y_test, preds, average="weighted")
     acc = accuracy_score(y_test, preds)
     f_one = f1_score(y_test, preds, average="weighted")
 
     if save:
-        os.rename("model/saved_model/model.joblib", "model/saved_model/old_model.joblib")
-        os.rename("model/saved_model/vectorizer.joblib", "model/saved_model/old_vectorizer.joblib")
+        os.rename(
+            "model/saved_model/model.joblib", "model/saved_model/old_model.joblib"
+        )
+        os.rename(
+            "model/saved_model/vectorizer.joblib",
+            "model/saved_model/old_vectorizer.joblib",
+        )
 
         joblib.dump(model, "model/saved_model/model.joblib")
         joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
-    
+
     training_time = datetime.datetime.now() - start
 
     print(f"Training time: {training_time}\n")
 
     return training_time, score, conf_mat, recall, prec, acc, f_one
+
 
 def add_report(text, label):
     con = sqlite3.connect("model/data/dataset.db")
@@ -85,26 +101,29 @@ def add_report(text, label):
 
     con.close()
 
+
 def csv_to_sql():
     con = sqlite3.connect("model/data/dataset.db")
     cur = con.cursor()
 
     # Load data
-    df = pd.read_csv('model/data/df_file.csv')
-    df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
+    df = pd.read_csv("model/data/df_file.csv")
+    df["Text"] = df["Text"].apply(lambda x: x.replace("\n", ""))
 
-    df.drop_duplicates(ignore_index = True, inplace=True)
+    df.drop_duplicates(ignore_index=True, inplace=True)
 
-    df['prep_text'] = df['Text'].apply(preprocess)
+    df["prep_text"] = df["Text"].apply(preprocess)
     print("Preprocessing done")
 
-    cur.execute("""
+    cur.execute(
+        """
     CREATE TABLE IF NOT EXISTS Dataset(
         text TEXT,
         prep_text TEXT,
         label INTEGER
     )
-    """)
+    """
+    )
 
     articles = []
 
@@ -119,6 +138,7 @@ def csv_to_sql():
     print("Done")
     con.close()
 
+
 def second_greatest(arr):
     largest = np.max(arr[0])
     index = 0
@@ -129,6 +149,7 @@ def second_greatest(arr):
             index = i
 
     return index
+
 
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
@@ -144,6 +165,7 @@ def classify(text):
     second = second_greatest(model.predict_proba(transformed))
 
     return prediction, second, probs[0][second]
+
 
 if __name__ == "__main__":
     train()
