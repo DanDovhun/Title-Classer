@@ -15,6 +15,7 @@ import seaborn as sns
 
 import os
 
+
 def admin_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -38,12 +39,6 @@ def admin_login(request):
 def admin_logout(request):
     logout(request)
     return redirect("admin_login")
-
-
-@login_required
-def admin_dashboard(request):
-    # return render(request, 'admin_dashboard.html')
-    return redirect("/admin/model")
 
 
 @login_required
@@ -220,7 +215,7 @@ def retrain(user):
             accuracy=acc,
             precision=prec,
             recall=recall,
-            f_one=f_one
+            f_one=f_one,
         )
 
     else:
@@ -244,6 +239,7 @@ def retrain(user):
         ai_model[1].save()
 
     return redirect("/admin/model")
+
 
 def revert(request):
     ai_model = ModelInfo.objects.all()
@@ -275,14 +271,30 @@ def revert(request):
         ai_model[1].recall = old_recall
         ai_model[1].f_one = old_f_one
 
-        os.rename("model/saved_model/model.joblib", "model/saved_model/previous_model.joblib")
-        os.rename("model/saved_model/vectorizer.joblib", "model/saved_model/previous_vec.joblib")
-        
-        os.rename("model/saved_model/old_model.joblib", "model/saved_model/model.joblib")
-        os.rename("model/saved_model/old_vectorizer.joblib", "model/saved_model/vectorizer.joblib")
+        os.rename(
+            "model/saved_model/model.joblib", "model/saved_model/previous_model.joblib"
+        )
+        os.rename(
+            "model/saved_model/vectorizer.joblib",
+            "model/saved_model/previous_vec.joblib",
+        )
 
-        os.rename("model/saved_model/previous_model.joblib", "model/saved_model/old_model.joblib")
-        os.rename("model/saved_model/previous_vec.joblib", "model/saved_model/old_vectorizer.joblib")   
+        os.rename(
+            "model/saved_model/old_model.joblib", "model/saved_model/model.joblib"
+        )
+        os.rename(
+            "model/saved_model/old_vectorizer.joblib",
+            "model/saved_model/vectorizer.joblib",
+        )
+
+        os.rename(
+            "model/saved_model/previous_model.joblib",
+            "model/saved_model/old_model.joblib",
+        )
+        os.rename(
+            "model/saved_model/previous_vec.joblib",
+            "model/saved_model/old_vectorizer.joblib",
+        )
 
         ai_model[0].save()
         ai_model[1].save()
