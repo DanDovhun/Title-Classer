@@ -17,7 +17,7 @@ nlp = spacy.load("en_core_web_sm")
 
 # May not be used directly in training, but is used to preprocessed raw data 
 # when transfering them from the csv file to the database
-def preprocess_text(txt):
+def preprocess(txt):
     txt = re.sub('[^a-zA-Z0-9]', ' ', txt) 
     txt = " ".join(txt.split()) 
 
@@ -25,8 +25,6 @@ def preprocess_text(txt):
 
     doc = nlp(txt)
 
-    print(type(doc))
-    
     for item in doc:
         arr.append(item.lemma_)
 
@@ -80,7 +78,7 @@ def add_report(text, label):
     con = sqlite3.connect("model/data/dataset.db")
     cur = con.cursor()
 
-    prepped = preprocess_text(text)
+    prepped = preprocess(text)
 
     cur.execute("INSERT INTO Dataset VALUES(?, ?, ?)", (text, prepped, label))
     con.commit()
@@ -92,12 +90,12 @@ def csv_to_sql():
     cur = con.cursor()
 
     # Load data
-    df = pd.read_csv('data/df_file.csv')
+    df = pd.read_csv('model/data/df_file.csv')
     df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
 
     df.drop_duplicates(ignore_index = True, inplace=True)
 
-    df['prep_text'] = df['Text'].apply(preprocess_text)
+    df['prep_text'] = df['Text'].apply(preprocess)
     print("Preprocessing done")
 
     cur.execute("""
@@ -135,7 +133,7 @@ def second_greatest(arr):
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
     vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
-    text = preprocess_text(text)
+    text = preprocess(text)
 
     reshaped = np.array([text])
     transformed = vectorizer.transform(reshaped)
