@@ -211,6 +211,7 @@
         margin: 0;
         padding: 0;
       }
+
       /*Navbar styles*/
 
       .user-navbar {
@@ -223,6 +224,25 @@
         align-items: center;
         display: flex;
         justify-content: center;
+      }
+
+      /*Toast message styles*/
+      .toast-message {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: var(--background-form);
+        color: var(--text-color);
+        text-align: center;
+        border: solid 1px var(--button-green-hover);
+        border-radius: 5px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        right: 10px;
+        bottom: 30px;
+      }
+      .toast-message.show{
+        visibility: visible;
       }
     </style>
   </head>
@@ -293,6 +313,11 @@
         </form>
       </dialog>
     </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="toast-message"> {{ message }} </div>
+      {% endfor %}
+    {% endif %}
     <p>
       Are you an Admin for this website?
       <a href="{% url 'admin_model' %}">Login</a>
@@ -301,6 +326,7 @@
     <script>
       var reportDialog = document.querySelector(".report-dialog");
       var error = "{{error}}"
+      var toasts = document.querySelectorAll(".toast-message")
       function openReportModal() {
           reportDialog.showModal();
       }
@@ -312,6 +338,14 @@
       if (error) {
           openReportModal();
       }
+
+      toasts.forEach(function(toast) {
+
+      toast.classList.add("show");
+      setTimeout(function() {
+        toast.classList.remove("show");
+      }, 3000);
+  });
   </script>
   
   </body>

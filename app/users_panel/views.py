@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from model.model import classify
 
 from .forms import ArticleForm, ReportForm
@@ -70,6 +71,7 @@ def user_prediction(request):
             else:
 
                 report = report_form.save()
+                messages.success(request, "Report submitted successfully!")
                 return redirect("user_prediction")
         else:
             error = True
