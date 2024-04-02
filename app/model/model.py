@@ -5,6 +5,7 @@ import spacy
 import joblib
 import sqlite3
 import datetime
+import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -71,6 +72,9 @@ def train(save):
     f_one = f1_score(y_test, preds, average="weighted")
 
     if save:
+        os.rename("model/saved_model/model.joblib", "model/saved_model/old_model.joblib")
+        os.rename("model/saved_model/vectorizer.joblib", "model/saved_model/old_vectorizer.joblib")
+
         joblib.dump(training_alg["model"], "model/saved_model/model.joblib")
         joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
     

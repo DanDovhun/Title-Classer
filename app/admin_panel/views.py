@@ -11,6 +11,7 @@ from .forms import EnterArticleForm
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+import os
 
 def admin_login(request):
     if request.method == "POST":
@@ -57,6 +58,9 @@ def admin_model(request):
     form = EnterArticleForm()
     ai_model = ModelInfo.objects.all()
     model_info = ai_model[0]
+
+    if len(ai_model) == 2:
+        model_info = ai_model[1]
 
     acc = []
 
@@ -165,6 +169,7 @@ def retrain(user):
     plt.tight_layout()
     plt.savefig(cf_loc)
 
+    # If there are no saved models yet
     if len(ai_model) == 0:
         model = ModelInfo(
             conf_matrix=cf_loc,
@@ -178,14 +183,80 @@ def retrain(user):
 
         model.save()
 
+    # If there is only one model saved
+    elif len(ai_model) == 1:
+        new_model = ModelInfo.objects.create(
+            conf_matrix=cf_loc,
+            training_time=training_time,
+            old_acc=ai_model[0].accuracy,
+            accuracy=acc,
+            precision=prec,
+            recall=recall,
+            f_one=f_one
+        )
+
     else:
-        ai_model[0].training_time = training_time
-        ai_model[0].old_acc = ai_model[0].accuracy
-        ai_model[0].accuracy = acc
-        ai_model[0].precision = prec
-        ai_model[0].recall = recall
-        ai_model[0].f_one = f_one
+        ai_model[0].conf_matrix = ai_model[1].conf_matrix
+        ai_model[0].training_time = ai_model[1].training_time
+        ai_model[0].accuracy = ai_model[1].accuracy
+        ai_model[0].precision = ai_model[1].precision
+        ai_model[0].recall = ai_model[1].recall
+        ai_model[0].f_one = ai_model[1].f_one
 
         ai_model[0].save()
+
+        ai_model[1].conf_matrix = cf_loc
+        ai_model[1].training_time = training_time
+        ai_model[1].old_acc = ai_model[0].accuracy
+        ai_model[1].accuracy = acc
+        ai_model[1].precision = prec
+        ai_model[1].recall = recall
+        ai_model[1].f_one = f_one
+
+        ai_model[1].save()
+
+    return redirect("/admin/model")
+
+def revert(request):
+    ai_model = ModelInfo.objects.all()
+
+    if len(ai_model) < 2:
+        pass
+
+    else:
+        old = ai_model[0]
+        new = ai_model[1]
+
+        old_training_time = old.training_time
+        old_accuracy = old.accuracy
+        old_precision = old.precision
+        old_recall = old.recall
+        old_f_one = old.f_one
+
+        ai_model[0].training_time = new.training_time
+        ai_model[0].old_acc = new.old_acc
+        ai_model[0].accuracy = new.accuracy
+        ai_model[0].precision = new.precision
+        ai_model[0].recall = new.recall
+        ai_model[0].f_one = new.f_one
+
+        ai_model[1].training_time = old_training_time
+        ai_model[1].old_acc = new.accuracy
+        ai_model[1].accuracy = old_accuracy
+        ai_model[1].precision = old_precision
+        ai_model[1].recall = old_recall
+        ai_model[1].f_one = old_f_one
+
+        os.rename("model/saved_model/model.joblib", "model/saved_model/previous_model.joblib")
+        os.rename("model/saved_model/vectorizer.joblib", "model/saved_model/previous_vec.joblib")
+        
+        os.rename("model/saved_model/old_model.joblib", "model/saved_model/model.joblib")
+        os.rename("model/saved_model/old_vectorizer.joblib", "model/saved_model/vectorizer.joblib")
+
+        os.rename("model/saved_model/previous_model.joblib", "model/saved_model/old_model.joblib")
+        os.rename("model/saved_model/previous_vec.joblib", "model/saved_model/old_vectorizer.joblib")   
+
+        ai_model[0].save()
+        ai_model[1].save()
 
     return redirect("/admin/model")
