@@ -34,6 +34,10 @@ Assuming you already have docker installed on your machine, you can just follow 
 ##### Build your own container
 ##### 1.) Build the image:
 ```
+// Pull python:3.11 image
+docker pull python:3.11
+
+// Build title_classer image
 docker build -t title_classer .
 ```
 
