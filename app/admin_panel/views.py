@@ -254,7 +254,7 @@ def revert(request):
         os.rename("model/saved_model/old_vectorizer.joblib", "model/saved_model/vectorizer.joblib")
 
         os.rename("model/saved_model/previous_model.joblib", "model/saved_model/old_model.joblib")
-        os.rename("model/saved_model/previous_vec.joblib", "model/saved_model/old_vectorizer.joblib")
+        os.rename("model/saved_model/previous_vec.joblib", "model/saved_model/old_vectorizer.joblib")   
 
         ai_model[0].save()
         ai_model[1].save()
