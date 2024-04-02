@@ -18,14 +18,12 @@ nlp = spacy.load("en_core_web_sm")
 # when transfering them from the csv file to the database
 def preprocessing(txt):
     # Remove all non
-    txt = re.sub('[^a-zA-Z0-9]', ' ', txt) 
-    txt = " ".join(txt.split()) 
+    txt = re.sub('[^a-zA-Z0-9]', ' ', txt)
+    txt = " ".join(txt.lower().split()) 
 
     arr = []
     
     doc = nlp(txt)
-
-    print(type(doc))
     
     for item in doc:
         arr.append(item.lemma_)
@@ -96,7 +94,7 @@ def csv_to_sql():
     cur = con.cursor()
 
     # Load data
-    df = pd.read_csv('data/df_file.csv')
+    df = pd.read_csv('model/data/df_file.csv')
     df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
 
     df.drop_duplicates(ignore_index = True, inplace=True)
@@ -152,4 +150,4 @@ def classify(text):
     return prediction, second, probs[0][second]
 
 if __name__ == "__main__":
-    train()
+    csv_to_sql()
