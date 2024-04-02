@@ -39,7 +39,7 @@ docker build -t title_classer .
 
 ##### 2.) Run:
 ```
-docker run -it -p 8000:8000 title_classer:latest
+docker run -it -e "PORT=8000" -p 8000:8000 title_classer:latest
 ```
 
 #### b.) Outside of Docker:
