@@ -24,6 +24,7 @@
 
         <div>
           <button onclick="retrain()">Retrain Model</button>
+          <button onclick="revert()">Revert Model</button>
           <p class="modelText">
             Old Model accuracy: {{ old_acc }} <br />
             New model Accuracy: {{ accuracy }}
@@ -48,7 +49,11 @@
 
     <script>
       function retrain() {
-        window.location.href = "https://title-classer-43bc9ae7d642.herokuapp.com/retrain"
+        window.location.href = "http://localhost:8000/retrain"
+      }
+
+      function revert() {
+        window.location.href = "http://localhost:8000/revert"
       }
     </script>
     {% endblock %}

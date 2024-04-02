@@ -5,6 +5,7 @@ import spacy
 import joblib
 import sqlite3
 import datetime
+import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -52,10 +53,6 @@ def train(save):
 
     model = LogisticRegression(multi_class='ovr', C=2)
 
-    model.fit(X_train, y_train, 
-            eval_metric='merror',
-            eval_set=[(X_test, y_test)])
-
     model.fit(X_train, y_train)
         
     preds = model.predict(X_test)
@@ -68,6 +65,9 @@ def train(save):
     f_one = f1_score(y_test, preds, average="weighted")
 
     if save:
+        os.rename("model/saved_model/model.joblib", "model/saved_model/old_model.joblib")
+        os.rename("model/saved_model/vectorizer.joblib", "model/saved_model/old_vectorizer.joblib")
+
         joblib.dump(model, "model/saved_model/model.joblib")
         joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
     
