@@ -18,20 +18,19 @@ nlp = spacy.load("en_core_web_sm")
 # May not be used directly in training, but is used to preprocessed raw data 
 # when transfering them from the csv file to the database
 def preprocess_text(txt):
-    txt = re.sub('[^a-zA-Z]', ' ', txt) 
-    txt = txt.lower()
+    txt = re.sub('[^a-zA-Z0-9]', ' ', txt) 
     txt = " ".join(txt.split()) 
-    
+
+    arr = []
+
     doc = nlp(txt)
+
+    print(type(doc))
     
-    tokens_filtered = []
-    # Iterate through tokens and append to list if its not stop word or punctuation mark
-    for token in doc:
-        if token.is_stop or token.is_punct:
-            continue
-        tokens_filtered.append(token.lemma_)
-        
-    return " ".join(tokens_filtered)
+    for item in doc:
+        arr.append(item.lemma_)
+
+    return " ".join(arr)
 
 def train(save):
     print("Loading data...")
