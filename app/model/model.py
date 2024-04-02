@@ -50,19 +50,16 @@ def train(save):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, stratify = y)
 
-    training_alg = {'model':LogisticRegression(multi_class='ovr', C=2)}
+    model = LogisticRegression(multi_class='ovr', C=2)
 
-    try:
-        training_alg['model'].fit(X_train, y_train, 
-            early_stopping_rounds=10,
+    model.fit(X_train, y_train, 
             eval_metric='merror',
             eval_set=[(X_test, y_test)])
-            
-    except TypeError:
-        training_alg['model'].fit(X_train, y_train)
+
+    model.fit(X_train, y_train)
         
-    preds = training_alg["model"].predict(X_test)
-    score = training_alg["model"].score(X_test, y_test)
+    preds = model.predict(X_test)
+    score = model.score(X_test, y_test)
     conf_mat = confusion_matrix(y_test, preds)
     
     recall = recall_score(y_test, preds, average="weighted")
@@ -71,7 +68,7 @@ def train(save):
     f_one = f1_score(y_test, preds, average="weighted")
 
     if save:
-        joblib.dump(training_alg["model"], "model/saved_model/model.joblib")
+        joblib.dump(model, "model/saved_model/model.joblib")
         joblib.dump(vectorizer, "model/saved_model/vectorizer.joblib")
     
     training_time = datetime.datetime.now() - start
