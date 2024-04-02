@@ -156,8 +156,8 @@ def second_greatest(arr):
 
 
 def classify(text):
-    model = joblib.load("app/model/saved_model/model.joblib")
-    vectorizer = joblib.load("app/model/saved_model/vectorizer.joblib")
+    model = joblib.load("model/saved_model/model.joblib")
+    vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
     text = preprocess_text(text)
 
     reshaped = np.array([text])

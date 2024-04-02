@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import IntegrityError
 from users_panel.models import UserReport
 from .models import AdminUser, ModelInfo
 from django.contrib.auth import authenticate, login, logout
@@ -51,8 +53,12 @@ def admin_model(request):
         if form.is_valid():
             text = form.cleaned_data["text"]
             label = form.cleaned_data["labels"]
-
-            add_report(text, label)
+            try:
+                add_report(text, label)
+            except Exception as e:
+                messages.error(request, f"Error adding to dataset: {e}")
+            else:
+                messages.success(request, "Successfully added to dataset")
 
     form = EnterArticleForm()
     ai_model = ModelInfo.objects.all()
@@ -88,9 +94,14 @@ def admin_reports(request):
     if request.method == "POST":
         if "reject_report" in request.POST:
             report_id = request.POST.get("report_id")
-            UserReport.objects.filter(id=report_id).delete()
-            return redirect("admin_reports")
-        
+
+            try:
+                UserReport.objects.filter(id=report_id).delete()
+            except Exception as e:
+                messages.error(request, f"Error rejecting report: {e}")
+            else:
+                messages.success(request, "Succefully rejected User report")
+                return redirect("admin_reports")
 
         elif "accept_report" in request.POST:
             report_id = request.POST.get("report_id")
@@ -109,9 +120,14 @@ def admin_reports(request):
 
             cat = categories[actual_label]
 
-            add_report(text, cat)
+            try:
+                add_report(text, cat)
+            except Exception as e:
+                messages.error(request, f"Error adding to dataset: {e}")
+            else:
+                UserReport.objects.filter(id=report_id).delete()
+                messages.success(request, "Successfully added to dataset.")
 
-            UserReport.objects.filter(id=report_id).delete()
             return redirect("admin_reports")
 
     user_reports = UserReport.objects.all()
@@ -133,13 +149,25 @@ def admin_admins(request):
                 AdminUser.objects.create_user(
                     username=username, password=password, email=email
                 )
-                return redirect("admin_admins")
+            except IntegrityError:
+                messages.error(request, "Error creating Admin: Duplicate username")
             except Exception as e:
-                print(f"Error creating admin user: {e}")
+                messages.error(request, f"Error creating Admin: {e}")
+            else:
+                messages.success(request, f"Successfully created Admin: {username}")
+                return redirect("admin_admins")
         elif "delete_admin" in request.POST:
+
             admin_id = request.POST.get("admin_id")
-            AdminUser.objects.filter(id=admin_id).delete()
-            return redirect("admin_admins")
+
+            try:
+                AdminUser.objects.filter(id=admin_id).delete()
+            except Exception as e:
+                messages.error(request, f"Error deleting Admin: {e}")
+
+            else:
+                messages.success(request, "Successfully deleted Admin")
+                return redirect("admin_admins")
     admin_users = AdminUser.objects.all()
     return render(request, "admin_admins.html", {"admin_users": admin_users})
 
