@@ -16,19 +16,21 @@ nlp = spacy.load("en_core_web_sm")
 
 # May not be used directly in training, but is used to preprocessed raw data 
 # when transfering them from the csv file to the database
-def preprocessing(txt):
-    # Remove all non
-    txt = re.sub('[^a-zA-Z0-9]', ' ', txt)
-    txt = " ".join(txt.lower().split()) 
-
-    arr = []
+def preprocess_text(txt):
+    txt = re.sub('[^a-zA-Z]', ' ', txt) 
+    txt = txt.lower()
+    txt = " ".join(txt.split()) 
     
     doc = nlp(txt)
     
-    for item in doc:
-        arr.append(item.lemma_)
-
-    return " ".join(arr)
+    tokens_filtered = []
+    # Iterate through tokens and append to list if its not stop word or punctuation mark
+    for token in doc:
+        if token.is_stop or token.is_punct:
+            continue
+        tokens_filtered.append(token.lemma_)
+        
+    return " ".join(tokens_filtered)
 
 def train(save):
     print("Loading data...")
@@ -82,7 +84,7 @@ def add_report(text, label):
     con = sqlite3.connect("model/data/dataset.db")
     cur = con.cursor()
 
-    prepped = preprocessing(text)
+    prepped = preprocess_text(text)
 
     cur.execute("INSERT INTO Dataset VALUES(?, ?, ?)", (text, prepped, label))
     con.commit()
@@ -94,12 +96,12 @@ def csv_to_sql():
     cur = con.cursor()
 
     # Load data
-    df = pd.read_csv('model/data/df_file.csv')
+    df = pd.read_csv('data/df_file.csv')
     df['Text'] = df['Text'].apply(lambda x:x.replace('\n',''))
 
     df.drop_duplicates(ignore_index = True, inplace=True)
 
-    df['prep_text'] = df['Text'].apply(preprocessing)
+    df['prep_text'] = df['Text'].apply(preprocess_text)
     print("Preprocessing done")
 
     cur.execute("""
@@ -137,7 +139,7 @@ def second_greatest(arr):
 def classify(text):
     model = joblib.load("model/saved_model/model.joblib")
     vectorizer = joblib.load("model/saved_model/vectorizer.joblib")
-    text = preprocessing(text)
+    text = preprocess_text(text)
 
     reshaped = np.array([text])
     transformed = vectorizer.transform(reshaped)
@@ -150,4 +152,4 @@ def classify(text):
     return prediction, second, probs[0][second]
 
 if __name__ == "__main__":
-    csv_to_sql()
+    train()
