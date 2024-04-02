@@ -1,7 +1,7 @@
 import joblib
 import numpy as np
 import spacy
-from model import preprocess_text
+from model import preprocessing
 
 # Load the model and vectorizer
 model = joblib.load("saved_model/model.joblib")
@@ -64,8 +64,8 @@ categories = {
 
 # Preprocess text
 for i in range(0,len(titles)):
-    titles[i][0] = preprocess_text(titles[i][0])
-    articles[i][0] = preprocess_text(articles[i][0])
+    titles[i][0] = preprocessing(titles[i][0])
+    articles[i][0] = preprocessing(articles[i][0])
 
 correctTitles = 0
 correctArticles = 0
