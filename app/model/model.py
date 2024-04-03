@@ -46,7 +46,7 @@ def train(save):
 
     print("Vectorising...")
     vectorizer = TfidfVectorizer(
-        sublinear_tf=True, min_df=5, ngram_range=(1, 2), stop_words="english"
+        sublinear_tf=True, min_df=3, ngram_range=(1, 2), stop_words="english"
     )
     features = vectorizer.fit_transform(df["prep_text"]).toarray()
 
