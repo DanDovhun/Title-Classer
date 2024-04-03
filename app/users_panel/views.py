@@ -3,7 +3,7 @@ from django.contrib import messages
 from model.model import classify
 
 from .forms import ArticleForm, ReportForm
-from .models import UserReport
+from .models import UserReport, UserPrediction
 
 
 def user_dashboard(request):
@@ -39,6 +39,12 @@ def user_dashboard(request):
             request.session["prob"] = round(second_prob * 100, 2)
             request.session["second_exists"] = possibly_other
 
+            user_prediction = UserPrediction.objects.create(
+                inputPara=search_input,
+                firstCat=category,
+                seconCat=second_likely,
+                secondPercentage=round(second_prob * 100, 2),
+            )
             return redirect("user_prediction")
     else:
         article_form = ArticleForm()

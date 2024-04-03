@@ -22,3 +22,12 @@ class UserReport(models.Model):
 
     def __str__(self):
         return f"User Report - {self.reportParagraph[:20]} ..."
+
+
+class UserPrediction(models.Model):
+    inputPara = models.TextField()
+    firstCat = models.CharField(max_length=20)
+    seconCat = models.CharField(max_length=20, blank=True, null=True)
+    secondPercentage = models.DecimalField(
+        max_digits=4, decimal_places=2, blank=True, null=True
+    )
