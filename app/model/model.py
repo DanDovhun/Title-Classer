@@ -41,12 +41,12 @@ def preprocess(txt):
 def train(save):
     print("Loading data...")
     con = sqlite3.connect("model/data/dataset.db")
-    df = pd.read_sql_query("SELECT * FROM Dataset ORDER BY label", con)
+    df = pd.read_sql_query("SELECT prep_text, label FROM Dataset ORDER BY label", con)
     con.close()
 
     print("Vectorising...")
     vectorizer = TfidfVectorizer(
-        sublinear_tf=True, min_df=5, ngram_range=(1, 2), stop_words="english"
+        sublinear_tf=True, min_df=3, ngram_range=(1, 2), stop_words="english"
     )
     features = vectorizer.fit_transform(df["prep_text"]).toarray()
 
@@ -58,7 +58,7 @@ def train(save):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
 
-    model = LogisticRegression(multi_class="ovr", C=2)
+    model = LogisticRegression(random_state=0,multi_class="ovr", C=2)
 
     model.fit(X_train, y_train)
 
@@ -168,4 +168,4 @@ def classify(text):
 
 
 if __name__ == "__main__":
-    train()
+    train(save=False)
