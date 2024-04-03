@@ -6,7 +6,6 @@ import joblib
 import sqlite3
 import datetime
 import os
-import matplotlib.pyplot as plt
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -47,7 +46,7 @@ def train(save):
 
     print("Vectorising...")
     vectorizer = TfidfVectorizer(
-        sublinear_tf=True, min_df=5, ngram_range=(1, 2), stop_words="english"
+        sublinear_tf=True, min_df=3, ngram_range=(1, 2), stop_words="english"
     )
     features = vectorizer.fit_transform(df["prep_text"]).toarray()
 
