@@ -251,7 +251,7 @@
         padding: 20px;
         width: 40%;
       }
-      .modelContainer button {
+.modelContainer button {
         background-color: var(--button-blue);
         width: 70px;
         height: 35px;
@@ -283,7 +283,7 @@
         background-color: #31363f;
         color: white;
       }
-      
+            
       .conf_mat {
         display: block;
         margin-left: auto;
@@ -315,12 +315,18 @@
       
       .user_reports-table thead tr,
       .user_reports-table tbody tr {
-        background-color: var(--background-secondary);
         color: var(--text-color);
         display: grid;
         grid-template-columns:
           50% minmax(100px, 15%) minmax(100px, 15%)
           minmax(100px, 10%) minmax(100px, 10%);
+      }
+      .user_reports-table thead tr{
+        background-color: #3e5d5e;
+      }
+      
+      .user_reports-table tbody tr{
+        background-color: var(--background-secondary);
       }
       .user_reports-table td,
       .user_reports-table th {
@@ -431,7 +437,51 @@
       .close-btn:hover {
         background-color: var(--button-blue-hover);
       }
+      /* Predictions styles*/
+      .prediction-content {
+        width: 80%;
+        min-height: max-content;
+        max-height: 30rem;
+        margin: auto;
+        background-color: var(--background-secondary);
+        overflow-y: auto;
+      }
+      
+      .user-predictions-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+      
+      .user-predictions-table thead {
+        position: sticky;
+        top: 0px;
+        z-index: 1;
+      }
+      
+      .user-predictions-table thead tr,
+      .user-predictions-table tbody tr {
+        color: var(--text-color);
+        display: grid;
+        grid-template-columns:
+          50% minmax(100px, 20%) minmax(150px, 30%);
+      }
+      .user-predictions-table thead tr{
+        background-color: #3e5d5e;
+      }
+      .user-predictions-table tbody tr{
+        background-color: var(--background-secondary);
+      }
 
+      .user-predictions-table td,
+      .user-predictions-table th {
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
       /*Error styles*/
       .admin-error{
         visibility: hidden;
