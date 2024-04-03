@@ -249,19 +249,7 @@
       
       .modelContainer ul li div {
         padding: 20px;
-        width: 40%;
-      }
-.modelContainer button {
-        background-color: var(--button-blue);
-        width: 70px;
-        height: 35px;
-        color: white;
-        border-radius: 10px;
-        display: block;
-      }
-      .modelContainer button:hover {
-        background-color: var(--button-blue-hover);
-        cursor: pointer;
+        width: 50%;
       }
       .modelContainer .modelText {
         border: 1px solid #ccc;
@@ -282,6 +270,42 @@
         border: 1px solid #ccc;
         background-color: #31363f;
         color: white;
+      }
+      .model-btns{
+        display: flex;
+        width: 100%;
+      }
+      .model-btns button, .model-add {
+        width: 100px;
+        height: 40px;
+        margin-right: 10px;
+        color: var(--text-button);
+        border-radius: 10px;
+        display: block;
+      }
+      .model-btns .model-retrain {
+        background-color: rgb(35, 35, 144);
+        cursor: pointer;
+      }
+      .model-btns .model-retrain:hover {
+        background-color: rgb(23, 23, 106);
+        cursor: pointer;
+      }
+      
+      .model-btns .model-revert {
+        background-color: var(--button-blue);
+        cursor: pointer;
+      }
+      .model-btns .model-revert:hover {
+        background-color: var(--button-blue-hover);
+        cursor: pointer;
+      }
+      .model-add{
+        background-color: var(--button-green);
+      }
+      .model-add:hover{
+        background-color: var(--button-green-hover);
+        cursor: pointer;
       }
             
       .conf_mat {

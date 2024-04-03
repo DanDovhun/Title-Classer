@@ -1,3 +1,4 @@
+/*
 :root {
   --background-main: #1c2026;
   --background-secondary: #222831;
@@ -29,7 +30,7 @@ html {
   padding: 0;
 }
 
-/* Navbar styles */
+/* Navbar styles 
 .admin-navbar {
   background-color: #3e5d5e;
 }
@@ -121,7 +122,7 @@ html {
 .loginError {
   color: red;
 }
-/*Admin management styles*/
+/*Admin management styles
 .admin-content .container {
   display: flex;
   justify-content: center;
@@ -213,7 +214,7 @@ html {
   display: none;
 }
 
-/* Model management styles*/
+/* Model management styles
 
 .modelContainer ul {
   margin: 0 auto;
@@ -278,7 +279,7 @@ html {
   width: 85%;
 }
 
-/*User reports management styles*/
+/*User reports management styles
 .table-container {
   width: 80%;
   min-height: max-content;
@@ -347,7 +348,7 @@ html {
 .accept-btn:hover {
   background-color: var(--button-green-hover);
 }
-/** Expand reports dialog**/
+/** Expand reports dialog*
 .expand-report {
   width: 80%;
   max-width: 600px;
@@ -418,3 +419,4 @@ html {
 .close-btn:hover {
   background-color: var(--button-blue-hover);
 }
+*/
