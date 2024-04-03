@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import IntegrityError
-from users_panel.models import UserReport
+from users_panel.models import UserReport, UserPrediction
 from .models import AdminUser, ModelInfo
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
@@ -300,3 +300,9 @@ def revert(request):
         ai_model[1].save()
 
     return redirect("/admin/model")
+
+
+@login_required
+def admin_predictions(request):
+    predictions = UserPrediction.objects.all()
+    return render(request, "admin_predictions.html", {"predictions": predictions})

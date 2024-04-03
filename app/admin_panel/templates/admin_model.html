@@ -1,3 +1,4 @@
+
 {% extends 'admin_dashboard.html' %} {% block content%}
 <div class="model-content">
   <h2>Model Management</h2>
@@ -23,8 +24,10 @@
         </div>
 
         <div>
-          <button onclick="retrain()">Retrain Model</button>
-          <button onclick="revert()">Revert Model</button>
+          <div class="model-btns">
+            <button onclick="retrain()" class="model-retrain">Retrain Model</button>
+            <button onclick="revert()" class="model-revert">Revert Model</button>
+            </div>
           <p class="modelText">
             Old Model accuracy: {{ old_acc }} <br />
             New model Accuracy: {{ accuracy }}
@@ -32,7 +35,7 @@
         </div>
       </li>
       <li>
-        <div>
+        <div >
           <h4>Add to Dataset</h4>
           <p>Here you can add to the dataset used to train the model</p>
         </div>
@@ -41,7 +44,7 @@
             {% csrf_token %}
             {{ form.text }}
             {{ form.labels }}
-            <button>Add data</button>
+            <button class="model-add">Add data</button>
           </form>
         </div>
       </li>
@@ -56,6 +59,7 @@
         window.location.href = "https://title-classer-43bc9ae7d642.herokuapp.com/revert"
       }
     </script>
-    {% endblock %}
+    
   </div>
 </div>
+{% endblock %}
