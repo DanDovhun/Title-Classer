@@ -3,13 +3,13 @@
 if [ $# = 0 ]
 then
     echo "Script needs at least 1 argument, please use one of these:"
-    echo "'deploy' to push and release to tile-classer on Heroku (requires Dan's (the group member) login)" 
-    echo "'deploy-new [APP_NAME]' to create an app and push there"
-    echo "'build [IMAGE_NAME]' to build a docker container"
-    echo "'run [IMAGE_NAME] [PORT]'"
+    echo "'--deploy' to push and release to tile-classer on Heroku (requires Dan's (the group member) login)" 
+    echo "'--deploy-new [APP_NAME]' to create an app and push there"
+    echo "'--build [IMAGE_NAME]' to build a docker container"
+    echo "'--run [IMAGE_NAME] [PORT]'"
 fi
 
-if [ $1 = "deploy" ]
+if [ $1 = "--deploy" ]
 then
     echo "Deploying to title-classer web"
 
@@ -31,7 +31,7 @@ then
     echo "Releasing new title-classer"
     heroku container:release -a title-classer web
 
-elif [ $1 = "deploy-new" ]
+elif [ $1 = "--deploy-new" ]
 then
     if [ ${#2} = 0 ]
     then
@@ -63,7 +63,7 @@ then
     echo "Releasing new title-classer"
     heroku container:release -a $2 web
 
-elif [ $1 = "build" ]
+elif [ $1 = "--build" ]
 then
     if [ ${#2} = 0 ]
     then
@@ -74,7 +74,7 @@ then
     cd app
     docker build -t $2 .
 
-elif [ $1 = "run" ]
+elif [ $1 = "--run" ]
 then
     if [ $# != 3 ]
     then
@@ -98,7 +98,8 @@ then
 
 else
     echo "Argument not found; please only use arguments:"
-    echo "'deploy' to push and release on Heroku" 
-    echo "'deploy-new' to create an app and push there"
-    echo "'build' to build a docker container"
+    echo "'--deploy' to push and release to tile-classer on Heroku (requires Dan's (the group member) login)" 
+    echo "'--deploy-new [APP_NAME]' to create an app and push there"
+    echo "'--build [IMAGE_NAME]' to build a docker container"
+    echo "'--run [IMAGE_NAME] [PORT]'"
 fi
