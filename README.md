@@ -1,4 +1,5 @@
 # TitleClasser
+Address: https://title-classer-43bc9ae7d642.herokuapp.com/
 ## Description
 The purpose of this project is to automate classification of articles into a specific category. The size of the text can vary from the first paragraph to the entire article. 
 
@@ -77,7 +78,7 @@ python manage.py runserver
 
 ## Deployment on Heroku:
 ### Deployment:
-Address: https://title-classer-43bc9ae7d642.herokuapp.com/
+Address: *See the address on top of the document*
 ### Login to Heroku:
 ```
 heroku login
@@ -116,6 +117,7 @@ chmod +x deploy.sh
 ```
 
 The arguments are necessary to run the script so it would know which set of commands it should run. Here are the accepted arguments:
+
 *NOTE: some arguments must be followed by another to work*
 * ```--deploy```
     * Push a docker containter to Heroku and release it on the title-classer app on heroku
@@ -129,6 +131,8 @@ The arguments are necessary to run the script so it would know which set of comm
 
 * ```--run [ IMAGE_NAME ] [ PORT ]```
     * Run the Docker image
+
+__NOTE:__ *This is an UN*X shell script, while it may work on Linux or Mac, it may not work on Windows' native command line*
 
 ## Tools and Technologies:
 * Website:
