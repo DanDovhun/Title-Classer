@@ -105,6 +105,21 @@ heroku container:release -a title-classer web
 
 When the container is deployed the app will restart will take about 60 seconds to be running again.
 
+## Using the Shell Script
+There is a shell script located in the root of the repository named *deploy.sh*. This shell script was added to streamline building and running the docker image and deploying the docker image to Heroku. It takes these arguments:
+* ```--deploy```
+    * Push a docker containter to Heroku and release it on the title-classer app on heroku
+    * This should and can only be by the group
+
+* ```--deploy-new [APP_NAME]```
+    * Create your own app on Heroku and deploy a container there
+
+* ```--build [IMAGE_NAME]```
+    * Build a Docker image on your machine
+
+* ```--run [IMAGE_NAME] [PORT]```
+    * Run the Docker image
+
 ## Tools and Technologies:
 * Website:
     * Django
