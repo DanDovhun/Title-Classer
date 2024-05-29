@@ -150,11 +150,6 @@ __NOTE:__ *This is an UN*X shell script, while it may work on Linux or Mac, it m
     * Tensorflow
     * Numpy
  
-## Admin login details:
-__Username:__ test
-
-__Password:__ test
- 
 ## Contributors:
 * Aditya Nair
 * Daniel Dovhun
