@@ -174,7 +174,9 @@ def admin_admins(request):
 @login_required
 def retrain(user):
     cf_loc = "admin_panel/static/conf_mat.png"
+    print("I'm training")
     training_time, score, conf_mat, recall, prec, acc, f_one = train(save=True)
+    print("I'm here")
     ai_model = ModelInfo.objects.all()
 
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 5))
